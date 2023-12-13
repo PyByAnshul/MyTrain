@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask,render_template
 from flask_mongoengine import MongoEngine
 app = Flask(__name__)
 
@@ -8,6 +8,10 @@ from mytrain.setting import *
 
 @app.route('/')
 def train2():
-    return 'hello'
+    return render_template('index.html')
+
+@app.route('/login')
+def login():
+    return render_template('loginpage.html')
 
 
