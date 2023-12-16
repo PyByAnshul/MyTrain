@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+.search-input input {
+    background: #fff;
+    height: 17px;
+    width: 65%;
+    outline: none;
+    border: none;
+    border-radius: 0px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-input.active input {
+    border-radius: 5px 5px 0 0;
+}
+
+.search-input .autocom-box {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.search-input.active .autocom-box {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.autocom-box li {
+    background: #fff;
+    color: black;
+    z-index: 1000;
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+}
+
+.search-input.active .autocom-box li {
+    display: block;
+}
+
+.autocom-box li:hover {
+    background: #efefef;
+}
+
+.search-input .icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    color: #644bff;
+    cursor: pointer;
+}
+
+.wrapper {
+    z-index: 1000;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+}
+
+
+/* ********************************************** */
+
+.search-input1 input {
+    background: #fff;
+    height: 17px;
+    width: 65%;
+    outline: none;
+    border: none;
+    border-radius: 0px;
+    padding: 0 60px 0 20px;
+    font-size: 18px;
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-input1.active input {
+    border-radius: 5px 5px 0 0;
+}
+
+.search-input1 .autocom-box1 {
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.search-input1.active .autocom-box1 {
+    padding: 10px 8px;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.autocom-box1 li {
+    background: #fff;
+    color: black;
+    z-index: 1000;
+    list-style: none;
+    padding: 8px 12px;
+    display: none;
+    width: 100%;
+    cursor: default;
+    border-radius: 3px;
+}
+
+.search-input1.active .autocom-box1 li {
+    display: block;
+}
+
+.autocom-box1 li:hover {
+    background: #efefef;
+}
+
+.search-input1 .icon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    height: 55px;
+    width: 55px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 20px;
+    color: #644bff;
+    cursor: pointer;
+}
+
+.wrapper2 {
+    z-index: 1000;
+    position: absolute;
+    top: 0%;
+    left: 17%;
+    margin-left: 3px;
+}
+
+.searchBox {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 50px 0px;
+    /* z-index: -1; */
+    /* position: absolute;
+    width: 100%; */
+}
+
+.searchBox>form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 0px 150px;
+}
+
+.finderItem {
+    color: var(--white);
+    padding: 15px;
+}
+
+.finderItem>p {
+    margin: 0px;
+}
+
+.searchTitle {
+    font-size: 19px;
+}
+
+.finderItem>input {
+    padding: 15px;
+    outline: none;
+    border: none;
+    width: 200px;
+}
+
+.form {
+    position: relative;
+    right: -15%;
+}
+
+.searchBtn {
+    padding: 15px 40px;
+    font-size: 14px;
+    color: var(--white);
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border-radius: 1px;
+    background-color: var(--highlight);
+    width: 200px;
+}

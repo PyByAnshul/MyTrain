@@ -15,3 +15,8 @@ def login():
     return render_template('loginpage.html')
 
 
+@app.route('/train_finder')
+def train_finder():
+    return render_template('train_finder.html')
+
+

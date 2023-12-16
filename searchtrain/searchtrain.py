@@ -12,9 +12,6 @@ searchtrain = Blueprint('searchtrain_blueprint', __name__)
 
 
 
-
-
-
 @searchtrain.route('/searchtrain')
 def index():
 

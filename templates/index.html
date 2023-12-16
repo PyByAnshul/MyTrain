@@ -8,31 +8,67 @@
     <link rel="icon" href="{{url_for('static',filename='/image/institute-1.1s-200px.png')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+
 
     <title>{{page}}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+
 </head>
 
 <body>
     <header>
-        <a href="/" class="logo"><i  class="fas fa-university"></i> MyTrain </a>
+        <a href="/" class="logo"><i class="fas fa-subway"></i> MyTrain </a>
 
         <nav class="navbar">
-
-            <a href="/home" class="active" target="_parent">Home</a>
-            <a href="/loginpage" target="_self">LogIn</a>
-            <a href="/create_account" target="_self">Create_account</a>
-            <a href="/services" target="_self">Services</a>
+            <a href="/" class="active" target="_parent">Home</a>
+            <a href="/#serviceBox" target="_self">Services</a>
             <a href="/contact" target="_self">Contact Us</a>
-            <a href="/help" target="_self">Help</a>
-            <span id="google_translate_element" class="translater"></span>
+            <a href="/login" target="_self">LogIn</a>
 
         </nav>
 
     </header>
     <div>
-        {% block content%} {%endblock%}
+        {% block content%}
 
+        <!-- main hero container  -->
+        <div class="heroContainer">
+            <h1>Welcome to My Train App</h1>
+            <p>One stop solution for train traveling</p>
+        </div>
+
+        <!-- services box containerr -->
+        <div class="serviceContainer" id="serviceBox">
+            <h2>Services</h2>
+            <div class="serviceBox">
+                <a href="">
+                    <div class="serviceBoxItem">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p class="serviceTitle">Train Schedule</p>
+                    </div>
+                </a>
+                <a href="/train_finder">
+                    <div class="serviceBoxItem">
+                        <i class="fas fa-train"></i>
+                        <p class="serviceTitle">Train Finder</p>
+                    </div>
+                </a>
+                <a href="">
+                    <div class="serviceBoxItem">
+                        <i class="fas fa-search-location"></i>
+                        <p class="serviceTitle">Train Status</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        {%endblock%}
+
+        <footer>
+            <div class="copyrightBox">
+                <p>Copyright 2023 &#169; All Right Reserved | My Train App</p>
+            </div>
+        </footer>
     </div>
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -43,10 +79,10 @@
             );
         }
     </script>
-
+    <!-- 
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?
 cb=googleTranslateElementInit">
-    </script>
+</script> -->
 
 </body>
 
