@@ -1,0 +1,185 @@
+{% extends 'index.html'%} {% block content%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+<div class="usercontainer" id="signup">
+
+    <form class="form" action="" method="post" id="signupForm">
+        <p class="form-title">Sign in to your account</p>
+        <div class="input-container">
+            <input type="name" placeholder="Enter name" name="name">
+            <span>
+           </span>
+        </div>
+        <div class="input-container">
+            <input type="email" placeholder="Enter email" name="email">
+            <span>
+           </span>
+        </div>
+        <div class="input-container">
+            <input type="password" placeholder="Enter password" name="password">
+        </div>
+        <div class="input-container">
+            <input type="password" placeholder="Enter password again" name="repassword">
+        </div>
+        <button type="submit" class="submit" onclick="otp()">
+         Sign in
+       </button>
+
+        <p class="signup-link">
+            already have account?
+            <a href="#" onclick="showLogin()">login</a>
+        </p>
+    </form>
+
+</div>
+<div class="usercontainer " id="login">
+
+    <form class="form">
+        <p class="form-title">Sign in to your account</p>
+        <div class="input-container">
+            <input type="email" placeholder="Enter email">
+            <span>
+           </span>
+        </div>
+        <div class="input-container">
+            <input type="password" placeholder="Enter password">
+        </div>
+        <button type="submit" class="submit">
+         Sign in
+       </button>
+
+        <p class="signup-link">
+            No account?
+            <a href="#" onclick="showSignup()">Sign up</a>
+        </p>
+    </form>
+
+</div>
+<div class="usercontainer " id="OTP">
+
+    <form class="form2" id="otpForm">
+        <div class="title">OTP</div>
+        <div class="title">Verification Code</div>
+        <p class="message">We have sent a verification code to your mobile number</p>
+        <div class="inputs"> <input id="input1" type="text" maxlength="1"> <input id="input2" type="text" maxlength="1"> <input id="input3" type="text" maxlength="1"> <input id="input4" type="text" maxlength="1"> </div> <button class="action" type="submit">verify me</button>        </form>
+
+</div>
+
+<script>
+    function showSignup() {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('signup').style.display = 'flex';
+    }
+
+    function showLogin() {
+        document.getElementById('signup').style.display = 'none';
+        document.getElementById('login').style.display = 'flex';
+    }
+
+    function otp() {
+        document.getElementById('signup').style.display = 'none';
+        document.getElementById('OTP').style.display = 'flex';
+    }
+
+
+    document.getElementById('signupForm').addEventListener('submit', getdata);
+
+    function getdata(e) {
+        e.preventDefault();
+
+        var name = document.getElementsByName('name')[0].value;
+        console.log(name)
+        var email = document.getElementsByName('email')[0].value;
+        var password = document.getElementsByName('password')[0].value;
+        var repassword = document.getElementsByName('repassword')[0].value;
+        var params = {
+                name: name,
+                email: email,
+                password: password,
+                repassword: repassword
+            }
+            // const wrapper = document.getElementById('wrapper');
+            // // Hide the wrapper initially
+            // wrapper.style.display = 'block';
+            // send http request to our backend program of add funciton to add data in our database
+        var xhr = new XMLHttpRequest()
+
+        xhr.open('post', '../signupForm', true)
+        xhr.setRequestHeader('Content-type', 'application/json')
+        xhr.onreadystatechange = function() {
+                //when the data will be loaded then the form section will be closed
+
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        console.log(this.responseText)
+                            // wrapper.style.display = "none";
+                            // flyoutEl = document.getElementById('table');
+                            // flyoutEl.style.display = "block";
+                            // Handle the successful response
+                            // var arr = JSON.parse(this.responseText)
+                            // console.log(arr)
+                            // for (var i = 1; i < arr.length + 1; i++) {
+
+                        //     var obj = arr[i];
+                        //     console.log(obj)
+                        //     displaytable(i, obj['train_name'], obj['train_number'], obj['to_sta'], obj['to_std'])
+
+                        // }
+                    } else {
+                        // Handle the error response
+                        console.log('error')
+                    }
+                }
+
+                //this function is use to create dynamic html content by using two parameter name and data
+                // this is use to reset the form and not to store privous data
+                // var element = document.getElementById('postform');
+                // element.reset();
+                //document.getElementById('prediction').innerHTML= this.responseText;
+            }
+            //send data in json format
+        xhr.send(JSON.stringify(params));
+    }
+    document.getElementById('otpForm').addEventListener('submit', submitOTP);
+
+    function submitOTP(e) {
+        e.preventDefault();
+
+        // Get OTP input values
+        var input1 = document.getElementById('input1').value;
+        var input2 = document.getElementById('input2').value;
+        var input3 = document.getElementById('input3').value;
+        var input4 = document.getElementById('input4').value;
+
+        var otp = input1 + input2 + input3 + input4;
+
+        // Example of handling OTP data
+        var otpParams = {
+            otp: otp
+        };
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('POST', '/verifyOTP', true); // Adjust the endpoint accordingly
+        xhr.setRequestHeader('Content-type', 'application/json');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    // document.getElementById('statusotp').innerText = 'OTP verification successful'
+                    window.location.href = '/new_page';
+
+                    // Handle the successful response, e.g., navigate to a different page
+                } else {
+                    // document.getElementById('statusotp').innerText = 'OTP verification successful'
+                    // document.getElementById('link').innerHTML = `<a href="${}"><button class="action" type="submit">verify me</button></a>`
+
+                    // Handle the error response
+                }
+            }
+        };
+
+        // Send OTP data in JSON format
+        xhr.send(JSON.stringify(otpParams));
+    }
+</script>
+{%endblock%}
