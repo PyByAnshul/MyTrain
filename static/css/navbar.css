@@ -34,6 +34,7 @@ header {
     padding: 20px 50px;
     background-color: #fff;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
 }
 
 .logo {
@@ -162,4 +163,31 @@ header .navbar a:hover {
 .serviceBoxItem:hover {
     background-color: var(--primary);
     color: var(--white);
+}
+
+.profile-btn {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    border-left: 2px solid #322f2f;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.profile-btn img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 4px;
+    border: #302e2e;
+}
+
+.profile-btn span {
+    color: var(--main-color);
+    font-size: 16px;
+    font-weight: 700;
 }

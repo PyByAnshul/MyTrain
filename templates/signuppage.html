@@ -8,12 +8,12 @@
         <div class="input-container">
             <input type="name" placeholder="Enter name" name="name">
             <span>
-           </span>
+            </span>
         </div>
         <div class="input-container">
             <input type="email" placeholder="Enter email" name="email">
             <span>
-           </span>
+            </span>
         </div>
         <div class="input-container">
             <input type="password" placeholder="Enter password" name="password">
@@ -21,9 +21,10 @@
         <div class="input-container">
             <input type="password" placeholder="Enter password again" name="repassword">
         </div>
+        <p id="hidden"></p>
         <button type="submit" class="submit" onclick="otp()">
-         Sign in
-       </button>
+            Sign in
+        </button>
 
         <p class="signup-link">
             already have account?
@@ -37,16 +38,18 @@
     <form class="form">
         <p class="form-title">Sign in to your account</p>
         <div class="input-container">
-            <input type="email" placeholder="Enter email">
+            <input type="email" placeholder="Enter email" name="loginemail">
             <span>
-           </span>
+            </span>
         </div>
         <div class="input-container">
-            <input type="password" placeholder="Enter password">
+            <input type="password" placeholder="Enter password" name="loginpassword">
         </div>
+        <p id="hidden2"></p>
+
         <button type="submit" class="submit">
-         Sign in
-       </button>
+            Sign in
+        </button>
 
         <p class="signup-link">
             No account?
@@ -61,7 +64,10 @@
         <div class="title">OTP</div>
         <div class="title">Verification Code</div>
         <p class="message">We have sent a verification code to your mobile number</p>
-        <div class="inputs"> <input id="input1" type="text" maxlength="1"> <input id="input2" type="text" maxlength="1"> <input id="input3" type="text" maxlength="1"> <input id="input4" type="text" maxlength="1"> </div> <button class="action" type="submit">verify me</button>        </form>
+        <div class="inputs"> <input id="input1" type="text" maxlength="1"> <input id="input2" type="text" maxlength="1">
+            <input id="input3" type="text" maxlength="1"> <input id="input4" type="text" maxlength="1">
+        </div> <button class="action" type="submit">verify me</button>
+    </form>
 
 </div>
 
@@ -83,62 +89,62 @@
 
 
     document.getElementById('signupForm').addEventListener('submit', getdata);
+    var originalotp;
+    var params;
 
     function getdata(e) {
         e.preventDefault();
 
         var name = document.getElementsByName('name')[0].value;
-        console.log(name)
         var email = document.getElementsByName('email')[0].value;
         var password = document.getElementsByName('password')[0].value;
         var repassword = document.getElementsByName('repassword')[0].value;
-        var params = {
-                name: name,
-                email: email,
-                password: password,
-                repassword: repassword
-            }
-            // const wrapper = document.getElementById('wrapper');
-            // // Hide the wrapper initially
-            // wrapper.style.display = 'block';
-            // send http request to our backend program of add funciton to add data in our database
-        var xhr = new XMLHttpRequest()
+        if (password == repassword) {
 
-        xhr.open('post', '../signupForm', true)
-        xhr.setRequestHeader('Content-type', 'application/json')
-        xhr.onreadystatechange = function() {
-                //when the data will be loaded then the form section will be closed
-
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        console.log(this.responseText)
-                            // wrapper.style.display = "none";
-                            // flyoutEl = document.getElementById('table');
-                            // flyoutEl.style.display = "block";
-                            // Handle the successful response
-                            // var arr = JSON.parse(this.responseText)
-                            // console.log(arr)
-                            // for (var i = 1; i < arr.length + 1; i++) {
-
-                        //     var obj = arr[i];
-                        //     console.log(obj)
-                        //     displaytable(i, obj['train_name'], obj['train_number'], obj['to_sta'], obj['to_std'])
-
-                        // }
-                    } else {
-                        // Handle the error response
-                        console.log('error')
-                    }
+            params = {
+                    name: name,
+                    email: email,
+                    password: password,
+                    repassword: repassword
                 }
+                // const wrapper = document.getElementById('wrapper');
+                // // Hide the wrapper initially
+                // wrapper.style.display = 'block';
+                // send http request to our backend program of add funciton to add data in our database
+            var xhr = new XMLHttpRequest()
+            xhr.open('post', '../signupForm', true)
+            xhr.setRequestHeader('Content-type', 'application/json')
+            xhr.onreadystatechange = function() {
+                    //when the data will be loaded then the form section will be closed
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            console.log(this.responseText)
+                            var data = JSON.parse(this.responseText)
+                            if (data['email']) {
+                                originalotp = data['otp']
 
-                //this function is use to create dynamic html content by using two parameter name and data
-                // this is use to reset the form and not to store privous data
-                // var element = document.getElementById('postform');
-                // element.reset();
-                //document.getElementById('prediction').innerHTML= this.responseText;
-            }
-            //send data in json format
-        xhr.send(JSON.stringify(params));
+                            } else {
+                                document.getElementById('hidden').innerText = 'email not found'
+                            }
+
+                        } else {
+                            // Handle the error response
+                            console.log('error')
+                        }
+                    }
+
+                    //this function is use to create dynamic html content by using two parameter name and data
+                    // this is use to reset the form and not to store privous data
+                    // var element = document.getElementById('postform');
+                    // element.reset();
+                    //document.getElementById('prediction').innerHTML= this.responseText;
+                }
+                //send data in json format
+            xhr.send(JSON.stringify(params));
+        } else {
+            document.getElementById('hidden').innerText = 'password not matched'
+        }
+
     }
     document.getElementById('otpForm').addEventListener('submit', submitOTP);
 
@@ -152,34 +158,72 @@
         var input4 = document.getElementById('input4').value;
 
         var otp = input1 + input2 + input3 + input4;
+        if (otp == originalotp) {
+            var xhr = new XMLHttpRequest()
+            xhr.open('post', '../signupFormCompleted', true)
+            xhr.setRequestHeader('Content-type', 'application/json')
+            xhr.onreadystatechange = function() {
+                //when the data will be loaded then the form section will be closed
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        if (params) {
+                            data = JSON.parse(this.responseText)
+                            client_id = data['client_id']
+                            window.location.href = `/user_page/${client_id}`;
+                        }
 
-        // Example of handling OTP data
-        var otpParams = {
-            otp: otp
+                    } else {
+                        // Handle the error response
+                        console.log('error')
+                    }
+                }
+            }
+            xhr.send(JSON.stringify(params));
+        } else {
+
+
+            document.getElementsByClassName('message').innerText = 'wrong otp enter again'
+        }
+
+    }
+    document.getElementById('login').addEventListener('submit', login);
+
+    function login(e) {
+        e.preventDefault();
+
+        var email = document.getElementsByName('loginemail')[0].value;
+        var password = document.getElementsByName('loginpassword')[0].value;
+        console.log(email, password)
+        var paramss = {
+            email: email,
+            password: password
         };
 
         var xhr = new XMLHttpRequest();
-
-        xhr.open('POST', '/verifyOTP', true); // Adjust the endpoint accordingly
+        xhr.open('POST', '/login', true);
         xhr.setRequestHeader('Content-type', 'application/json');
+
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200) {
-                    // document.getElementById('statusotp').innerText = 'OTP verification successful'
-                    window.location.href = '/new_page';
-
-                    // Handle the successful response, e.g., navigate to a different page
+                    // Handle the successful response
+                    var data = JSON.parse(this.responseText);
+                    if (data['client_id']) {
+                        // Successful login logic here
+                        client_id = data['client_id']
+                        window.location.href = `/user_page/${client_id}`;
+                        console.log('Login successful');
+                    } else {
+                        document.getElementById('hidden2').innerText = 'incorrect details';
+                    }
                 } else {
-                    // document.getElementById('statusotp').innerText = 'OTP verification successful'
-                    // document.getElementById('link').innerHTML = `<a href="${}"><button class="action" type="submit">verify me</button></a>`
-
                     // Handle the error response
+                    console.log('Error during login');
                 }
             }
         };
 
-        // Send OTP data in JSON format
-        xhr.send(JSON.stringify(otpParams));
+        xhr.send(JSON.stringify(paramss));
     }
 </script>
 {%endblock%}
