@@ -6,6 +6,10 @@ import requests
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_mongoengine import MongoEngine
 from datetime import datetime
+from scripts.trainman import main as trainmanmain
+from scripts.indiarailway import main as indiatrain
+from scripts.trainstatus import main as trainstatus
+from scripts.runningstatus import main as running_status
 app = Flask(__name__)
 # setting
 if app:
@@ -97,31 +101,36 @@ def submitsearch():
     data = get_train(to_id['station_code'], from_id['station_code'])
     if data == None:
         if date == None or date == '':
-            date = datetime.now().date
-        url = "https://irctc1.p.rapidapi.com/api/v3/trainBetweenStations"
-        querystring = {"fromStationCode": from_id.get(
-            'station_code'), "toStationCode": to_id.get('station_code'), "dateOfJourney": f'{date}'}
-        headers = {
-            "X-RapidAPI-Key": "793a7dc73cmsh5fc4ac4754f7c66p1ca8ebjsn655a0b81d347",
-            "X-RapidAPI-Host": "irctc1.p.rapidapi.com"
-        }
-        response = requests.get(url, headers=headers, params=querystring)
-        res = response.json()
-        if res.get('status') == True and res.get('message') == 'Success':
-            data = res.get('data')
-            database_server(data, request_id)
-            keywordsearch(to_id['station_code'],
-                          from_id['station_code'], request_id)
-            print('this is from api ')
+            date = datetime.now().date()
+            dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
+        else:
+            dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
+        if dic.get('status')!=200:
+            return jsonify(['no data' for i in range(10)])
+        
+        data=dic['train_between_stations']
+        database_server(data,request_id=request_id)
+        keywordsearch(to_id['station_code'],from_id['station_code'],reqest_id=request_id)
     return jsonify(list(data))
 
 
 @app.route('/train_finder/<train_no>')
 def searchtrain_no(train_no):
-    data = get_details(train_no)
-    return f'{data}'
+    data = running_status(trian_number=train_no,date=datetime.now().date())
+    return render_template('running_status.html',table=data,train_no=train_no)
 
 
 @app.route('/user_page/<client_id>')
 def home_page(client_id):
     return render_template('index.html', username=get_user_name(client_id), username1='anshul')
+
+
+@app.route('/trainstatus')
+def trainstatus():
+    return render_template('running_status.html',form=True)
+
+
+# @app.route('get_ticket/<train_no>')
+# def get_ticker(train_no):
+#     render_template('')
+

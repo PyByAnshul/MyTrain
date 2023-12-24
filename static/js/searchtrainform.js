@@ -23,6 +23,9 @@ function getdata(e) {
             console.log('coon')
 
             if (xhr.readyState == 4) {
+                var container = document.querySelector('.tbody');
+                container.innerHTML = ''
+
                 if (xhr.status == 200) {
 
                     wrapper.style.display = "none";
@@ -31,11 +34,13 @@ function getdata(e) {
                     // Handle the successful response
                     var arr = JSON.parse(this.responseText)
                     console.log(arr)
+
+
                     for (var i = 1; i < arr.length + 1; i++) {
 
                         var obj = arr[i];
                         console.log(obj)
-                        displaytable(i, obj['train_name'], obj['train_number'], obj['to_sta'], obj['to_std'])
+                        displaytable(i, obj['train_name'], obj['train_number'], obj['from_sta'], obj['to_std'])
 
                     }
                 } else {

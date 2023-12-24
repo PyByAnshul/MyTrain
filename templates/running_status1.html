@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Live Train Running Status</title>
+
+    <meta name="robots" content="noindex, follow" />
+
+    <link rel="manifest" href="https://in.runningstatus.in/img/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="https://in.runningstatus.in/img/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- <link rel="stylesheet" href="https://in.runningstatus.in/css/bootandmain.css" /> -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .container {
+            position: relative;
+            top: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .group {
+            display: flex;
+            line-height: 28px;
+            align-items: center;
+            position: relative;
+            max-width: 290px;
+        }
+        
+        .input {
+            width: 100%;
+            height: 40px;
+            line-height: 28px;
+            padding: 0 1rem;
+            padding-left: 2.5rem;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f3f3f4;
+            color: #0d0c22;
+            transition: .3s ease;
+        }
+        
+        .input::placeholder {
+            color: #9e9ea7;
+        }
+        
+        .input:focus,
+        input:hover {
+            outline: none;
+            border-color: rgba(234, 76, 137, 0.4);
+            background-color: #fff;
+            box-shadow: 0 0 0 4px rgb(234 76 137 / 10%);
+        }
+        
+        .icon {
+            position: absolute;
+            left: 1rem;
+            fill: #9e9ea7;
+            width: 1rem;
+            height: 1rem;
+        }
+        
+        .submit {
+            width: 120px;
+            height: 40px;
+            border: 2px;
+            border-radius: 3%;
+        }
+    </style>
+</head>
+
+{% extends 'index.html'%} {% block content%}
+<div class="container">
+    {% if form %}
+    <div>
+        <form class="form" id="trainstatus">
+            <div class="group">
+                <svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><g><path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path></g></svg>
+                <input placeholder="Search" type="search" class="input" id="trainno">
+                <button class="submit" type="submit">submit</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+    document.getElementById('trainstatus').addEventListener('submit', gettrain);
+    const domain = window.location.origin;
+
+    function gettrain(e) {
+        e.preventDefault();
+        var train_no = document.getElementById('trainno').value;
+        console.log(train_no)
+        window.location.href = `/train_finder/${train_no}`;
+        // send http request to our backend program of add funciton to add data in our database
+    }
+</script>
+<div>
+    {{ table|safe }}
+</div>
+<section>
+    buy ticket
+</section>
+<script src="/js/loadcss.js"></script>
+<script id="loadcss">
+    loadCSS("https://in.runningstatus.in/fonts/icomoon/icomoon.css");
+    loadCSS("https://in.runningstatus.in/css/jquery-ui.css");
+    loadCSS("https://fonts.googleapis.com/css?family=Open+Sans:300,400,700");
+    loadCSS("https://in.runningstatus.in/css/running.css");
+</script>
+
+<!-- jQuery first, then Tether, then other JS. -->
+<script src="https://in.runningstatus.in/js/jquery.js"></script>
+<script src="https://in.runningstatus.in/js/tether.min.js"></script>
+<script src="https://in.runningstatus.in/js/bootstrap.min.js"></script>
+<script src="https://in.runningstatus.in/vendor/unifyMenu/unifyMenu.js"></script>
+<script src="https://in.runningstatus.in/vendor/onoffcanvas/onoffcanvas.js"></script>
+<script src="https://in.runningstatus.in/js/moment.js"></script>
+
+<!-- Slimscroll JS -->
+<script src="https://in.runningstatus.in/vendor/slimscroll/slimscroll.min.js"></script>
+<script src="https://in.runningstatus.in/vendor/slimscroll/custom-scrollbar.js"></script>
+
+<!-- Common JS -->
+<script src="https://in.runningstatus.in/js/common.js"></script>
+<script src="https://in.runningstatus.in/js/autosuggest.js"></script>
+<script src="https://in.runningstatus.in/js/running.js"></script>
+
+
+
+{%endblock%}
+
+</body>
+
+</html>
+
+</html>
