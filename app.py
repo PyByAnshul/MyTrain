@@ -36,6 +36,7 @@ def train2():
 
 @app.route('/signup')
 def signup():
+    # print('sing page')
     return render_template('signuppage.html')
 
 @app.route('/login',methods=['POST', 'GET'])
@@ -81,42 +82,57 @@ def signupFormCompleted():
     user_singin(dic)
     return jsonify({'client_id': client_id})
 
-
+import traceback
 @app.route('/train_finder')
 def train_finder():
     return render_template('train_finder.html')
 
-
+@app.route('/find_trains',methods=['POST','GET'])
 @app.route('/submitsearch', methods=['POST', 'GET'])
 def submitsearch():
-    toDest = request.json['toDest']
-    fromDest = request.json['fromDest']
-    date = request.json['toDate']
-    to_id = dict(mydb.traindatabase.find_one(
-        {'station_name': {"$regex": toDest}}))
-    from_id = dict(mydb.traindatabase.find_one(
-        {'station_name': {"$regex": fromDest}}))
-    print(toDest, fromDest)
-    request_id = str(uuid1())
-    data = get_train(to_id['station_code'], from_id['station_code'])
-    if data == None:
-        if date == None or date == '':
-            date = datetime.now().date()
-            dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
+    try:
+        if request.path.startswith('/find_trains'):
+            toDest = request.form.get('toDest')
+            fromDest = request.form.get('fromDest')
+            date = request.form.get('toDate')
         else:
-            dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
-        if dic.get('status')!=200:
-            return jsonify(['no data' for i in range(10)])
-        
-        data=dic['train_between_stations']
-        database_server(data,request_id=request_id)
-        keywordsearch(to_id['station_code'],from_id['station_code'],reqest_id=request_id)
-    return jsonify(list(data))
+            toDest = request.json['toDest']
+            fromDest = request.json['fromDest']
+            date = request.json['toDate']
+        to_id = dict(mydb.traindatabase.find_one(
+            {'station_name': {"$regex": toDest}}))
+        from_id = dict(mydb.traindatabase.find_one(
+            {'station_name': {"$regex": fromDest}}))
+        print(toDest, fromDest)
+        request_id = str(uuid1())
+        data = get_train(to_id['station_code'], from_id['station_code'])
+        if data == None:
+            if date == None or date == '':
+                date = datetime.now().date()
+                dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
+            else:
+                dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
+            data=dic['train_between_stations']
+            if dic.get('status')!=200:
+                data=['no data' for i in range(10)]
+            
+            database_server(data,request_id=request_id)
+            keywordsearch(to_id['station_code'],from_id['station_code'],reqest_id=request_id)
+        if request.path.startswith('/find_trains'):
+            print('find the train',data)
+            return render_template('train_finder.html',data=data,fromDest=fromDest,toDest=toDest)
+        return jsonify(list(data))
+    except Exception as e:
+        print(e)
+        traceback.print_exc()
+        return jsonify(['no data' for i in range(10)])
+
 
 
 @app.route('/train_finder/<train_no>')
 def searchtrain_no(train_no):
     data = running_status(trian_number=train_no,date=datetime.now().date())
+    print(data)
     return render_template('running_status.html',table=data,train_no=train_no)
 
 

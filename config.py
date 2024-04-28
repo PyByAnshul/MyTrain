@@ -2,7 +2,7 @@
 
 class Config:
     DEBUG = True
-    SECRET_KEY = 'anshulkumartrainapp'
+    SECRET_KEY = 'anshulkumar@#$^&dipanshu@@chirag@#$#adnan####@$#'
     SESSION_COOKIE_SECURE=True
     # MONGODB_SETTINGS={'host':'mongodb://localhost:27017/mytrain'}
     # MONGO_URI='mongodb://localhost:27017/mytrain'

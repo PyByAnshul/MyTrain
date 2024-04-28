@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+body{
+    background-color:#e3f9ee;
+}
 .search-input input {
-    background: #fff;
+    background: #ffffffdb;
     /* height: 17px; */
     width: 65%;
     outline: none;
@@ -63,12 +66,12 @@
     cursor: pointer;
 }
 
-.wrapper {
+/* .wrapper {
     z-index: 1000;
     position: absolute;
     top: 0%;
     left: 0%;
-}
+} */
 
 
 /* ********************************************** */
@@ -123,7 +126,7 @@
 .autocom-box1 li:hover {
     background: #efefef;
 }
-
+/* 
 .search-input1 .icon {
     position: absolute;
     right: 0px;
@@ -135,33 +138,40 @@
     font-size: 20px;
     color: #644bff;
     cursor: pointer;
-}
+} */
 
-.wrapper2 {
+/* .wrapper2 {
     z-index: 1000;
     position: absolute;
     top: 0%;
     left: 17%;
     margin-left: 3px;
-}
+} */
 
+.form{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    top: 20%;
+}
 .searchBox {
-    background-color: var(--primary);
+    background-color: black;
     color: var(--white);
-    padding: 50px 0px;
+    /* padding: 50px 0px; */
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 4px rgba(8, 7, 16, 0.6);
+    background-color: rgba(251, 251, 251, 0.593);
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     /* z-index: -1; */
     /* position: absolute;
     width: 100%; */
 }
 
-.searchBox>form {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 0px 150px;
-}
 
 .finderItem {
     color: var(--white);
@@ -183,63 +193,85 @@
     width: 200px;
 }
 
-.form {
-    position: relative;
-    right: -15%;
-}
 
-.searchBtn {
-    padding: 15px 40px;
+.form .searchBtn {
+    padding: 18px 40px;
     font-size: 14px;
-    color: var(--white);
+    color: white;
     font-weight: 600;
     border: none;
     outline: none;
     border-radius: 1px;
-    background-color: var(--highlight);
+    background-color: black;
     width: 200px;
+    /* position: relative;
+    top: 10px; */
+}
+.form .searchBtn {
+    padding: 18px 40px;
+    font-size: 14px;
+    color: white;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    border-radius: 1px;
+    background-color: black;
+    width: 200px;
+    position: relative;
+    top: 12px;
 }
 
 
 /* table */
 
 .table {
+position: relative;
     width: 100%;
+    top: 40%;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 4px rgba(8, 7, 16, 0.6);
+    background-color: rgba(251, 251, 251, 0.593);
     border-collapse: collapse;
-    margin-top: 10px;
-    display: none;
+    /* margin-top: 10px; */
+    /* display: none; */
+    /* z-index: 10; */
 }
 
 .thead {
-    background-color: var(--primary);
-    border: 1px solid #e8e8e8;
-    color: white;
+    color:black;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 3px 6px 8px 0px #f5f5f5;
     margin: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 20px rgba(8, 7, 16, 0.6);
+    background-color: rgba(251, 251, 251, 0.986);
 }
 
 .thead>.tr {
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-evenly;
+    align-items: center;
     font-size: 14px;
     font-weight: bold;
+    color:black;
     /* text-align: center; */
 }
 
 .tbody>.tr {
-    background-color: #ffffff;
-    border: 1px solid #e8e8e8;
-    color: rgb(0, 0, 0);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 4px rgba(8, 7, 16, 0.6);
+    background-color: rgba(251, 251, 251, 0.878);
+    color:black;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 3px 6px 8px 0px #f5f5f5;
     margin: 5px;
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-evenly;
+    align-items: center;
+    font-size: 1.5rem;
 }
 
 .thead>.tr>p,
@@ -254,5 +286,31 @@
 }
 
 #wrapper {
+    box-shadow: none;
+    border: none;
+    position: absolute;
+    background-color:none;
+    top: 40%;
+    right: 50%;
     display: none;
+}
+   
+.bg_image {
+    /* The image used */
+    
+    /* Full height */
+    height: 100vh;
+
+z-index: -10;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: cover;
+}
+
+element.style {
+    margin: auto;
+    background:none;
+    display: block;
+    shape-rendering: auto;
 }
