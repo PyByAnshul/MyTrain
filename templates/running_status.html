@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
-
-<head>
-    <title>My Train</title>
+{% extends 'index.html'%} {% block content%}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 
@@ -805,7 +799,9 @@
             height: 78px;
             left: 0
         }
-        
+        .sidebar-download-container{
+            z-index: 1000;
+        }
         .running-status-cntr .status-list-cntr .status-row .current .departed .vertical-line .stn-pointer,
         .running-status-cntr .status-list-cntr .status-row .stn-passed .vertical-line .stn-pointer {
             background: #aaa
@@ -1066,7 +1062,7 @@
 </head>
 
 <body>
-    {% extends 'index.html'%} {% block content%}
+    
     <!--train-part-->
     <div id="content">
         <div class="train-running-status-page u-pos-rel">
@@ -1160,8 +1156,6 @@
                     console.log(lastPart);
                 }
             </script>
+        </body>
             {%endblock%}
 
-</body>
-
-</html>

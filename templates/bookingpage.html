@@ -58,6 +58,7 @@ label img {
   background-color: #4787e9;
   transform: scale(1);
 }
+
 .checked-label:checked + label:before {
   content: "✓";
   background-color: #010308;
@@ -282,7 +283,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
                                             <h2>Booking Details</h2>
                                             <div class="details">
                                                 <p><strong>Coach No:</strong> <span id="coach-no">C1</span></p>
-                                                <p><strong>Train No:</strong> <span id="train-no">12345</span></p>
+                                                <p><strong>Train No:</strong> <span id="train-no">{{ train_no }}</span></p>
                                                 <p><strong>Selected Seats:</strong> <span id="selected-seats">0</span></p>
                                                 <p><strong>Total Price:</strong> <span id="total-price">$0</span></p>
                                                 <p><strong>Coach Type:</strong> <span id="coach-type">General</span></p>
@@ -430,7 +431,7 @@ document.getElementById('book-button').addEventListener('click', function() {
         urlParams.set('totalprice', totalPrice);
         urlParams.set('coachtype', coachType);
 
-        const newUrl = window.location.origin + window.location.pathname + '/book_ticket'+ '?' + urlParams.toString();
+        const newUrl = window.location.origin + '/book/book_ticket'+ '?' + urlParams.toString();
         window.location.href = newUrl;
     });
 

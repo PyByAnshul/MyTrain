@@ -167,13 +167,11 @@ def trainstatus():
     return render_template('running_status.html',form=True)
 
 
-@app.route('/get_ticket/<train_no>')
-def get_ticker(train_no):
-    return render_template('ticket.html')
 
 @app.route('/book')
-def book():
-    return render_template('bookingpage.html')
+@app.route('/get_ticket/<train_no>')
+def book(train_no):
+    return render_template('bookingpage.html',train_no=train_no)
 
 
 @app.route('/book/book_ticket', methods=['GET','POST'])
