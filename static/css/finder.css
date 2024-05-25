@@ -225,7 +225,7 @@ body{
 /* table */
 
 .table {
-position: relative;
+position: absolute;
     width: 100%;
     top: 40%;
     border-radius: 10px;
@@ -235,7 +235,7 @@ position: relative;
     border-collapse: collapse;
     /* margin-top: 10px; */
     /* display: none; */
-    /* z-index: 10; */
+    z-index: 10;
 }
 
 .thead {

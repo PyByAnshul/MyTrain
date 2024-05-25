@@ -1,0 +1,10 @@
+Ticket Details
+Name: a
+Email: s@gmail.com
+Phone: +919456954582
+Address: dfs
+Train No: None
+Coach No: None
+Seats: 4
+Total Price: None
+Coach Type: None

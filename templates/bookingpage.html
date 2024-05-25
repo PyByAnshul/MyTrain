@@ -1,0 +1,442 @@
+{% extends 'index.html'%} {% block content%}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+<style>
+            ul {
+  list-style-type: none;
+}
+
+li {
+  display: inline-block;
+}
+
+input[type="checkbox"][id^="cb"] {
+  display: none;
+}
+
+label {
+
+  padding: 10px;
+  display: block;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+
+label:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+label img {
+    height: 33px;
+    width: 42px;
+
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+:checked + label {
+  border-color: #ddd;
+}
+
+:checked + label:before {
+  content: "✓";
+  background-color: #4787e9;
+  transform: scale(1);
+}
+.checked-label:checked + label:before {
+  content: "✓";
+  background-color: #010308;
+  transform: scale(1);
+}
+
+
+:checked + label img {
+  transform: scale(0.9);
+  /* box-shadow: 0 0 5px #333; */
+  /* background-color: rgba(38, 104, 146, 0.13);; */
+  /* filter: drop-shadow(0 0 5px #333); */
+  z-index: -1;
+}
+.booking-details {
+    position: relative;
+    top: -30px;
+    color: #ffffff;
+    background: #4787e9;
+box-shadow:  0 10px 21px rgba( 31, 38, 135, 0.37 );
+backdrop-filter: blur( 3px );
+-webkit-backdrop-filter: blur( 3px );
+border-radius: 10px;
+border: 1px solid rgba( 255, 255, 255, 0.18 );
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .booking-details .details {
+        margin-bottom: 20px;
+    }
+    .booking-details .details p {
+        margin: 5px 0;
+    }
+    .booking-details button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .booking-details button:hover {
+        background-color: #0056b3;
+    }
+    .arrow {
+            position: absolute; /* Position the arrow absolutely within the container */
+            top: -10px; /* Adjust the top position to be above the image */
+            left: 0; /* Initially hide the arrow */
+            display: none;
+        }
+
+</style>
+    <div class="traincontainer trainstructre">
+
+        <div class="app-content">
+            <div class="app-container">
+
+                <div class="app-content">
+                    
+                    <div class="projects-section">
+                        
+                        <div class="projects-section-header">
+
+
+                            <h2>
+                                <div class="image-container">
+                                    <img src="{{ url_for('static',filename='/images/file.png') }}" alt="engine">
+                                    
+                                    <img src="{{ url_for('static',filename='/images/file (1).png') }}" alt="A1" class="image2">
+                                    <img src="{{ url_for('static',filename='/images/file (1).png') }}" alt="A2" class="image2 image3" >
+                                    <img src="{{ url_for('static',filename='/images/file (1).png') }}" alt="A3" class="image2 image4">
+                                    <img src="{{ url_for('static',filename='/images/file (1).png') }}" alt="B1" class="image2 image5">
+                                    <img src="{{ url_for('static',filename='/images/file (2).png') }}" alt="B2" class="image2 image6">
+                                    <img src="{{ url_for('static',filename='/images/file (2).png') }}" alt="B3" class="image2 image7">
+                                    <img src="{{ url_for('static',filename='/images/file (2).png') }}" alt="C1" class="image2 image8">
+                                    <img src="{{ url_for('static',filename='/images/file (3).png') }}" alt="C2" class="image2 image9">
+                                    <img src="{{ url_for('static',filename='/images/file (3).png') }}" alt="C3" class="image2 image10">
+                                    <img src="{{ url_for('static',filename='/images/file (3).png') }}" alt="C4" class="image2 image11">
+                                    <img src="{{ url_for('static',filename='/images/file.png') }}" alt="last loco" class="image2 lastcoach">
+                                 
+                                    <!-- Add more images here -->
+                                </div>
+                        </div>
+
+
+                     
+                
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="traincontainer">
+
+        <div class="app-content">
+            <div class="app-container">
+
+                <div class="app-content">
+                    <div class="app-sidebar">
+                        <a href="#" id="Ac">AC First Class</a>
+                        <a href="" id="Ac">AC 2 Tier</a>
+                        <a href="" id="Ac">AC 3 Tier</a>
+                        <a href="" id="Sleeper">Sleeper Class</a>
+                        <a href="#" id="general">General Class</a>
+                    </div>
+                    <div class="projects-section">
+                        
+                        <div class="projects-section-header">
+                               
+                                <div class="bookticketcontainer">
+                                  
+                                    <div class="mainseatconatiner seatconatiner">
+                                        <div class="tripleseat">
+                                            <ul>
+                                                <!-- Set 1 -->
+                                                <li><input type="checkbox" id="cb1_1" />
+                                                  <label for="cb1_1"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb2_1" />
+                                                  <label for="cb2_1"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb3_1" />
+                                                  <label for="cb3_1"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb4_1" />
+                                                  <label for="cb4_1"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                              
+                                                <!-- Set 2 -->
+                                                <li><input type="checkbox" id="cb1_2" />
+                                                  <label for="cb1_2"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb2_2" />
+                                                  <label for="cb2_2"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb3_2" />
+                                                  <label for="cb3_2"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb4_2" />
+                                                  <label for="cb4_2"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                              
+                                                <!-- Set 3 -->
+                                                <li><input type="checkbox" id="cb1_3" />
+                                                  <label for="cb1_3"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb2_3" />
+                                                  <label for="cb2_3"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb3_3" />
+                                                  <label for="cb3_3"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb4_3" />
+                                                  <label for="cb4_3"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+
+
+                                                <li><input type="checkbox" id="cb1_4" />
+                                                  <label for="cb1_4"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb2_4" />
+                                                  <label for="cb2_4"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb3_4" />
+                                                  <label for="cb3_4"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                          
+                                              
+                                                <!-- Add more sets as needed -->
+                                              </ul>
+                                              
+                                        </div>
+                                        <div class="dualseat">
+                            
+                                            <ul>
+                                                <li><input type="checkbox" id="cb1" />
+                                                  <label for="cb1"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb2" />
+                                                  <label for="cb2"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb3" />
+                                                  <label for="cb3"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb4" />
+                                                  <label for="cb4"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                              </ul>
+                                              <ul>
+                                                <li><input type="checkbox" id="cb5" />
+                                                  <label for="cb5"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb6" />
+                                                  <label for="cb6"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb7" />
+                                                  <label for="cb7"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb8" />
+                                                  <label for="cb8"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                              </ul>
+
+                                              <ul>
+                                                <li><input type="checkbox" id="cb9" />
+                                                  <label for="cb9"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                                <li><input type="checkbox" id="cb10" />
+                                                  <label for="cb10"><img src="{{ url_for('static',filename='/images/seat.png') }}" /></label>
+                                                </li>
+                                            
+                                              </ul>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="seatconatiner seatinfo">
+                                        <div class="booking-details">
+                                            <h2>Booking Details</h2>
+                                            <div class="details">
+                                                <p><strong>Coach No:</strong> <span id="coach-no">C1</span></p>
+                                                <p><strong>Train No:</strong> <span id="train-no">12345</span></p>
+                                                <p><strong>Selected Seats:</strong> <span id="selected-seats">0</span></p>
+                                                <p><strong>Total Price:</strong> <span id="total-price">$0</span></p>
+                                                <p><strong>Coach Type:</strong> <span id="coach-type">General</span></p>
+                                            </div>
+                                            <button id="book-button">Book Seats</button>
+                                            <button id="book-button">Book Food</button>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <script>
+        // Get all images
+        var images = document.querySelectorAll('.image-container img');
+        var container = document.querySelector('.image-container');
+        var arrow = document.createElement('div');
+        arrow.classList.add('arrow');
+        arrow.innerHTML = '⬇️'; // Unicode for down arrow
+    
+        // Append arrow to the container
+        container.appendChild(arrow);
+    
+        // Function to randomly select checkboxes
+        function selectRandomCheckboxes() {
+    // Get all checkboxes
+    var checkboxes = document.querySelectorAll('.mainseatconatiner input[type="checkbox"]');
+    
+    // Reset all checkboxes
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = false;
+        checkbox.classList.remove('checked-label'); // Remove the class if it exists
+        checkbox.disabled = false; // Enable all checkboxes
+    });
+    
+    // Loop through each checkbox and randomly select some
+    checkboxes.forEach(function(checkbox) {
+        // Generate a random number between 0 and 1
+        var random = Math.random();
+        // If the random number is greater than 0.5, check the checkbox
+        if (random > 0.5) {
+            checkbox.checked = true;
+            checkbox.classList.add('checked-label'); // Add the class
+            checkbox.disabled = true; // Disable the checkbox
+            
+        }
+    });
+}
+
+    
+        // Call the function to select random checkboxes when the script runs
+    
+        // Loop through each image and attach click event listener
+        images.forEach(function(image) {
+            image.addEventListener('click', function() {
+                // Scroll to the image's position within the container
+                container.scrollLeft = image.offsetLeft;
+    
+                // Position the arrow above the selected image
+                arrow.style.display = 'block';
+                arrow.style.left = image.offsetLeft + (image.offsetWidth / 2) + 'px'; // Position arrow in the middle of the image
+    
+                // Set booking details based on alt attribute
+                var coachNo = image.alt;
+                if (coachNo == 'engine' || coachNo == 'last loco'){
+                    console.log('wrong way')
+                    var checkboxes = document.querySelectorAll('.mainseatconatiner input[type="checkbox"]');
+            checkboxes.forEach(function(checkbox) {
+    checkbox.checked = false;
+});
+                }
+                else{
+
+                    var coachImage = document.querySelector('img[alt="' + coachNo + '"]');
+                    selectRandomCheckboxes();
+                    document.getElementById('Ac').style.background="rgba(255, 255, 255, 0.16)";
+                    document.getElementById('Sleeper').style.background="rgba(255, 255, 255, 0.16)";
+                    document.getElementById('general').style.background="rgba(255, 255, 255, 0.16)";
+                    if (coachImage) {
+                        document.getElementById('coach-no').innerText = coachNo;
+                        if (['A1', 'A2', 'A3'].includes(coachNo)) {
+    document.getElementById('coach-type').innerText = 'AC First Class';
+    document.getElementById('Ac').style.background="#4787e9";
+
+}
+                        // Set other details based on your data structure or logic
+                    }
+                        if (['B1', 'B2', 'B3'].includes(coachNo)) {
+    document.getElementById('coach-type').innerText = 'Sleeper Class';
+    document.getElementById('Sleeper').style.background="#4787e9";
+
+}
+                        if (['C1', 'C2', 'C3','C4'].includes(coachNo)) {
+    document.getElementById('coach-type').innerText = 'General';
+    document.getElementById('general').style.background="#4787e9";
+
+}
+                        // Set other details based on your data structure or logic
+                    
+                }
+                
+            });
+        });
+        // Select all checkboxes
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+const pricePerSeat = {
+    'A': 3000,
+    'B': 300,
+    'C': 30
+};
+let totalPrice = 0;
+
+function updateCount() {
+    const selectedCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked:not(.checked-label)');
+    const selectedCount = selectedCheckboxes.length;
+    document.getElementById('selected-seats').innerText = selectedCount;
+
+    const coachNo = document.getElementById('coach-no').innerText.trim().toUpperCase();
+    if (coachNo[0] in pricePerSeat) {
+        totalPrice = selectedCount * pricePerSeat[coachNo[0]];
+        document.getElementById('total-price').innerText = totalPrice;
+    }
+}
+
+checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', updateCount);
+});
+
+document.getElementById('book-button').addEventListener('click', function() {
+        const trainNo = document.getElementById('train-no').innerText;
+        const coachNo = document.getElementById('coach-no').innerText;
+        const selectedSeats = document.getElementById('selected-seats').innerText;
+        const totalPrice = document.getElementById('total-price').innerText.replace('$', '');
+        const coachType = document.getElementById('coach-type').innerText;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('trainno', trainNo);
+        urlParams.set('coachno', coachNo);
+        urlParams.set('seats', selectedSeats);
+        urlParams.set('totalprice', totalPrice);
+        urlParams.set('coachtype', coachType);
+
+        const newUrl = window.location.origin + window.location.pathname + '/book_ticket'+ '?' + urlParams.toString();
+        window.location.href = newUrl;
+    });
+
+    </script>
+    
+
+
+
+    {% endblock %}

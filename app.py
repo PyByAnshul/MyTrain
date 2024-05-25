@@ -3,7 +3,10 @@ import random
 from uuid import uuid1
 import time
 import requests
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for,send_file
+import qrcode
+# import pywhatkit
+
 from flask_mongoengine import MongoEngine
 from datetime import datetime
 from scripts.trainman import main as trainmanmain
@@ -11,6 +14,13 @@ from scripts.indiarailway import main as indiatrain
 from scripts.trainstatus import main as trainstatus
 from scripts.runningstatus import main as running_status
 app = Flask(__name__)
+import os
+STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
+QR_CODES_DIR = os.path.join(STATIC_DIR, 'qr_codes')
+
+# Ensure the qr_codes directory exists
+if not os.path.exists(QR_CODES_DIR):
+    os.makedirs(QR_CODES_DIR)
 # setting
 if app:
     from mytrain.setting import *
@@ -28,6 +38,17 @@ def send_mails(user_email, otp):
         print(e)
         return False
 
+def send_email_with_qr(email, qr_path):
+    msg = Message('Your QR code for booking details', sender='a9756549615@gmail.com', recipients=[email])
+    with app.open_resource(qr_path) as qr_file:
+        msg.attach(qr_path.split('/')[-1], 'image/png', qr_file.read())
+    try:
+        mail.send(msg)
+        return True
+    except Exception as e:
+        # Log the error
+        print(e)
+        return False
 
 @app.route('/')
 def train2():
@@ -149,4 +170,64 @@ def trainstatus():
 @app.route('/get_ticket/<train_no>')
 def get_ticker(train_no):
     return render_template('ticket.html')
+
+@app.route('/book')
+def book():
+    return render_template('bookingpage.html')
+
+
+@app.route('/book/book_ticket', methods=['GET','POST'])
+def booking_link():
+    if request.method == 'GET':
+        train_no = request.args.get('trainno')
+        coach_no = request.args.get('coachno')
+        seats = request.args.get('seats')
+        total_price = request.args.get('totalprice')
+        coach_type = request.args.get('coachtype')
+
+        booking_details = {
+            'train_no': train_no,
+            'coach_no': coach_no,
+            'seats': seats,
+            'total_price': total_price,
+            'coach_type': coach_type
+        }
+
+        # Constructing the booking link
+        booking_link = f"/book?trainno={train_no}&coachno={coach_no}&seats={seats}&totalprice={total_price}&coachtype={coach_type}"
+        
+        return render_template('user_info.html',train_no=train_no,coach_no=coach_no,seats=seats,total_price=total_price,coach_type=coach_type)
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = '+91' + str(request.form.get('phone'))  # Assuming phone numbers start with '+91'
+        address = request.form.get('address')
+        train_no = request.form.get('train_no')
+        coach_no = request.form.get('coach_no')
+        seats = request.form.get('seats')
+        total_price = request.form.get('total_price')
+        coach_type = request.form.get('coach_type')
+        
+        # Generate the QR code data
+        qr_data = f"Name: {name}\nEmail: {email}\nPhone: {phone}\nAddress: {address}\nTrain No: {train_no}\nCoach No: {coach_no}\nSeats: {seats}\nTotal Price: {total_price}\nCoach Type: {coach_type}"
+        
+        # Save the QR code image with a filename based on phone number and train number
+        qr_filename = f"{phone}_{train_no}.png"
+        qr_path = os.path.join(QR_CODES_DIR, qr_filename)
+        qr = qrcode.make(qr_data)
+        qr.save(qr_path)
+
+        # Send the QR code image via WhatsApp
+        # pywhatkit.sendwhats_image(phone, qr_path, "Your QR code for booking details")
+        send_email_with_qr(email,qr_path)
+        # Render the success page with the form data
+        return render_template('success.html', name=name, email=email, phone=phone, address=address, 
+                               train_no=train_no, coach_no=coach_no, seats=seats, total_price=total_price, 
+                               coach_type=coach_type, qr_path=qr_path)
+@app.route('/qr_code')
+def qr_code():
+    # Serve the QR code image to the webpage
+    return send_file('static/qr_code.png', mimetype='image/png')
+
 

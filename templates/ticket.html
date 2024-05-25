@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        .ticket_container{
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
         .modal {
             width: fit-content;
             height: fit-content;
@@ -153,6 +160,8 @@
 </head>
 
 <body>
+<div class="ticket_container">
+
     <div class="modal">
         <form class="form">
             <div class="payment--options">
@@ -231,6 +240,8 @@
             <button class="purchase--btn">Checkout</button>
         </form>
     </div>
+</div>
+
 </body>
 
 </html>
