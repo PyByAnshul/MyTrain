@@ -1,6 +1,6 @@
 from mytrain.setting import mydb
 
-
+from pymongo import UpdateOne
 def database_server(data: list, request_id) -> tuple:
     for i in data:
         key = {'train_number': i.get('train_number')}
@@ -52,3 +52,12 @@ def get_user_id(email,password):
     if user==None:
         return None
     return dict(user).get('client_id')
+
+
+def store_train_data(new_stations):
+    update_operations = [
+        UpdateOne({'station_name': station['station_name']}, {'$set': station}, upsert=True)
+        for station in new_stations
+    ]
+    data=mydb.traindatabase.bulk_write(update_operations)
+    return True

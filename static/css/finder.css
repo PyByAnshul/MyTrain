@@ -220,6 +220,9 @@ body{
     position: relative;
     top: 12px;
 }
+.searchBtn:hover{
+    background-color: #5d9cec;
+}
 
 
 /* table */

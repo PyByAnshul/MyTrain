@@ -1,6 +1,5 @@
-let suggestions = [
+suggestions = [
     "SAWANTWADI R",
-    "THIVIM",
     "KARMALI",
     "MADGOAN JN.",
     "MADGOAN JN.",

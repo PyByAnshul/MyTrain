@@ -54,18 +54,18 @@
     </svg>
 </div>
 <div class="searchResultBox">
-    {% if data %}
-    <div class="table" id="table" style="display: block;">
-        {% else %}
+    <!-- <div class="table" id="table" style="display: block;">
+        
         <div class="table" id="table">
-        {% endif %}
+
         <div class="thead">
             <div class="tr">
                 <p>Sr.no</p>
                 <p>Train Name/Train No.</p>
-                <p>DEPARTURE TIME</p>
-                <p>ARRIVE TIME</p>
-                <p>View</p>
+                <p>Departure Time</p>
+                <p>Arrival Time</p>
+                <p>Live Location</p>
+                <p>Book Ticket</p>
             </div>
         </div>
         <br>
@@ -78,17 +78,44 @@
                 <p>{{i['from_sta']}}</p>
                 <p>{{i['to_std']}}</p>
                 <a href="/train_finder/{{i['train_number']}}"><button class="searchBtn">view</button></a>
+                <a href="/book_ticket/?train_no={{i['train_number']}}&start_from={{fromDest}}&end_from={{toDest}}"><button class="searchBtn">view</button></a>
             </div>
             {% endfor %}
             {% endif %}
         </div>
-    </div>
-    <br>
+
+    </div> -->
+    <table class="table-container">
+        <thead>
+            <tr>
+                <th><h1>Sr.no</h1></th>
+                <th><h1>Train Name/Train No.</h1></th>
+                <th><h1>Departure Time</h1></th>
+                <th><h1>Arrival Time</h1></th>
+                <th><h1>Live Location</h1></th>
+                <th><h1>Book Ticket</h1></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if data %}
+            {% for i in data %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{i["train_name"]}}/{{i["train_number"]}}</td>
+                <td>{{i['from_sta']}}</td>
+                <td>{{i['to_std']}}</td>
+                <td  ><a href="/train_finder/{{i['train_number']}}">view</a></td>
+                <td  ><a href="/book_ticket/?train_no={{i['train_number']}}&start_from={{fromDest}}&end_from={{toDest}}">view</a></td>
+            </tr>
+    
+            {% endfor %}
+            {% endif %}
+
+        </tbody>
+    </table>
 </div>
 <style>
 @import "npm/bootstrap@4.4.1/scss/vendor/_tables.scss";
-
-// Override styles for .table-responsive
 
     .tbody .searchBtn {
     padding: 18px 40px;
@@ -100,11 +127,134 @@
     border-radius: 1px;
     background-color: black;
     width: 200px;
+    cursor: pointer;
 }
 .table-responsive{
     display:flex;
 }
+.tbody .searchBtn:hover{
+    background-color: #ffffff;
+    color: black;
+    border: 2px solid black;
+
+}
+h1 {
+  font-size:3em; 
+  font-weight: 300;
+  line-height:1em;
+  text-align: center;
+  color: #f7f8f9;
+}
+
+h2 {
+  font-size:1em; 
+  font-weight: 300;
+  text-align: center;
+  display: block;
+  line-height:1em;
+  padding-bottom: 2em;
+  color: #FB667A;
+}
+
+h2 a {
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #FB667A;
+  text-decoration: none;
+}
+
+.blue { color: #185875; }
+.yellow { color: #FFF842; }
+
+.table-container th h1 {
+	  font-weight: bold;
+	  font-size: 1.2rem;
+  text-align: left;
+  color: #e1e7eb;
+}
+
+.table-container td {
+	  font-weight: normal;
+	  font-size: 1.2rem;
+  -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+	   -moz-box-shadow: 0 2px 2px -2px #0E1119;
+	        box-shadow: 0 2px 2px -2px #0E1119;
+}
+
+.table-container {
+	  text-align: left;
+	  overflow: hidden;
+	  width: 80%;
+	  margin: 0 auto;
+  display: table;
+  padding: 0 0 8em 0;
+  position: absolute;
+    width: 100%;
+    top: 40%;
+    
+    z-index: 10;
+}
+
+.table-container td, .table-container th {
+	  padding-bottom: 2%;
+	  padding-top: 2%;
+  padding-left:2%;  
+}
+.table-container tr:nth-child(odd) a {
+	color: #000000;
+    font-size: 1.4rem;
+}
+.table-container tr:nth-child(even) a {
+	color: #e6dada;
+    font-size: 1.4rem;
+}
+
+/* Background-color of the odd rows */
+.table-container tr:nth-child(odd) {
+	  background-color: #f0f2f5;
+}
+
+/* Background-color of the even rows */
+.table-container tr:nth-child(even) {
+	  background-color: #2C3446;
+      color: white;
+}
+
+.table-container th {
+	  background-color: #7b9ef1;
+      color: white;
+      
+}
+
+.table-container td:first-child { color: #FB667A; }
+
+/* .table-container tr:hover {
+   background-color: #464A52;
+-webkit-box-shadow: 0 6px 6px -6px #0E1119;
+	   -moz-box-shadow: 0 6px 6px -6px #0E1119;
+	        box-shadow: 0 6px 6px -6px #0E1119;
+} */
+
+.table-container td:hover {
+  background-color: #3f8cf0;
+  color: #fffff9;
+  font-weight: bold;
+  
+  box-shadow: #2d62a7 -1px 1px, #2d62a7 -2px 2px, #2d62a7 -3px 3px, #2d62a7 -4px 4px, #2d62a7 -5px 5px, #2d62a7 -6px 6px;
+  transform: translate3d(6px, -6px, 0);
+  
+  transition-delay: 0s;
+	  transition-duration: 0.4s;
+	  transition-property: all;
+  transition-timing-function: line;
+}
+
+@media (max-width: 800px) {
+.table-container td:nth-child(4),
+.table-container th:nth-child(4) { display: none; }
+}
 </style>
+
 <script src="{{ url_for('static', filename='js/stations.js') }}"></script>
 <script src="{{ url_for('static', filename='js/searchtrain.js') }}"></script>
 <script src="{{ url_for('static', filename='js/destination.js') }}"></script>

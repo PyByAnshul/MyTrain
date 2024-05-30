@@ -19,147 +19,11 @@
 <!-- Favicon -->
 <link id='favicon' rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-png">
 <style>
-           @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap");
-
-
-.resturant_section img {
-  width: 100%;
-  height: 100%;
-}
-.resturant_section{
-    background-color: white;
-    padding: 1rem 9%;
-}
-
-
-.resturant_section main {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  place-items: center;
-  gap: 30px;
-  padding: 40px 80px;
-}
-
-.resturant_section .card {
-  position: relative;
-  display: flex;
-  align-items: flex-end;
-  width: min(95%, 400px);
-  height: 500px;
-  padding: 30px;
-  box-shadow: 0px 7px 10px rgba(0, 0, 0, 0.5);
-  border-radius: 25px;
-  transition: all 0.5s ease;
-}
-
-.resturant_section .card:hover {
-  transform: translateY(10px);
-}
-
-.resturant_section .card:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    180deg,
-    rgba(59, 72, 164, 0.6) 1%,
-    rgba(94, 186, 180, 0.9) 98%
-  );
-  transition: all 0.5s;
-  opacity: 0;
-  border-radius: 20px;
-}
-
-.resturant_section .card:hover:after {
-  opacity: 1;
-}
-
-.resturant_section .card img {
-  position: absolute;
-  object-fit: cover;
-  top: 0;
-  left: 0;
-  border-radius: 20px;
-}
-
-.resturant_section .card .info {
-  position: relative;
-  z-index: 3;
-  color: #fff;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.5s;
-}
-
-.resturant_section .card:hover .info {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.resturant_section .info h1 {
-  font-size: clamp(1.3rem, 3vw, 1.5rem);
-}
-
-.resturant_section .info p {
-  font-size: clamp(0.9rem, 3vw, 1rem);
-  font-weight: 500;
-  margin: 24px 0 16px;
-  line-height: 1.3;
-  text-align: justify;
-}
-
-.resturant_section button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
-  background: #fff;
-  color: #4b5563;
-  font-size: 0.9rem;
-  font-weight: 700;
-  outline: 0;
-  border: 0;
-  border-radius: 5px;
-  transform: translateY(0);
-  transition: color 0.3s ease-in, transform 0.4s linear;
-  cursor: pointer;
-}
-
-.resturant_section button:hover {
-  color: rgba(94, 186, 180, 1);
-  transform: translateY(3px);
-}
-
-.resturant_section .particles {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-@media (max-width: 930px) {
-  .resturant_section main {
-    grid-template-columns: repeat(1, 1fr);
-    padding: 60px 80px;
-  }
-}
-
-@media (max-width: 400px) {
-  .resturant_section main {
-    padding: 60px 30px;
-  }
-
-  .resturant_section .card {
-    height: 400px;
-    padding: 20px;
-  }
-}
-.popular_package{
-    background-color: #f7f7f7;
-}
+    
+    .searchBtn:hover {
+        cursor: pointer;
+background-color:#5d9cec ;
+    }
 </style>
     <title>TrainTransit | Traveling App</title>
 </head>
@@ -614,7 +478,7 @@
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
-    <script src="{{ url_for('static', filename='js/stations.js') }}"></script>
+    <!-- <script src="{{ url_for('static', filename='js/stations.js') }}"></script> -->
     <script src="{{ url_for('static', filename='js/searchtrain.js') }}"></script>
     <script src="{{ url_for('static', filename='js/destination.js') }}"></script>
     

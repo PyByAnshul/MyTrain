@@ -1,18 +1,12 @@
 from flask_mail import Message
-import random
-from uuid import uuid1
-import time
-import requests
-from flask import Flask, render_template, request, jsonify, redirect, url_for,send_file
-import qrcode
-# import pywhatkit
-
-from flask_mongoengine import MongoEngine
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
 from datetime import datetime
-from scripts.trainman import main as trainmanmain
+import qrcode
+from uuid import uuid1
+import random
 from scripts.indiarailway import main as indiatrain
-from scripts.trainstatus import main as trainstatus
 from scripts.runningstatus import main as running_status
+from static.stationdata import stations as stations_stored
 app = Flask(__name__)
 import os
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
@@ -24,7 +18,7 @@ if not os.path.exists(QR_CODES_DIR):
 # setting
 if app:
     from mytrain.setting import *
-    from mytrain.model import database_server, get_train, keywordsearch, get_details, user_singin, get_user_name,get_user_id
+    from mytrain.model import database_server, get_train, keywordsearch, get_details, user_singin, get_user_name,get_user_id,store_train_data
 
 
 def send_mails(user_email, otp):
@@ -108,7 +102,7 @@ import traceback
 def train_finder():
     return render_template('train_finder.html')
 
-@app.route('/find_trains',methods=['POST','GET'])
+@app.route('/find_trains', methods=['POST', 'GET'])
 @app.route('/submitsearch', methods=['POST', 'GET'])
 def submitsearch():
     try:
@@ -117,36 +111,51 @@ def submitsearch():
             fromDest = request.form.get('fromDest')
             date = request.form.get('toDate')
         else:
+            data_json = request.json
             toDest = request.json['toDest']
             fromDest = request.json['fromDest']
             date = request.json['toDate']
-        to_id = dict(mydb.traindatabase.find_one(
-            {'station_name': {"$regex": toDest}}))
-        from_id = dict(mydb.traindatabase.find_one(
-            {'station_name': {"$regex": fromDest}}))
+
+        # Query the database to find station codes
+        to_document = mydb.traindatabase.find_one({'station_name': {"$regex": toDest}})
+        from_document = mydb.traindatabase.find_one({'station_name': {"$regex": fromDest}})
+
+        if to_document is None or from_document is None:
+            raise ValueError("Invalid station names provided")
+
+        to_id = to_document['station_code']
+        from_id = from_document['station_code']
+
         print(toDest, fromDest)
         request_id = str(uuid1())
-        data = get_train(to_id['station_code'], from_id['station_code'])
-        if data == None:
-            if date == None or date == '':
+
+        # Retrieve train data
+        data = get_train(from_id, to_id)
+
+        if data is None:
+            if not date:
                 date = datetime.now().date()
-                dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
-            else:
-                dic=indiatrain(to_id['station_code'],from_id['station_code'],date)
-            data=dic['train_between_stations']
-            if dic.get('status')!=200:
-                data=['no data' for i in range(10)]
-            
-            database_server(data,request_id=request_id)
-            keywordsearch(to_id['station_code'],from_id['station_code'],reqest_id=request_id)
+            dic = indiatrain(from_id, to_id, date)
+            data = dic.get('train_between_stations', [])
+            if dic.get('status') != 200:
+                data = ['no data' for _ in range(10)]
+
+            # Save data to database
+            database_server(data, request_id=request_id)
+            keywordsearch(from_id, to_id,request_id)
+
         if request.path.startswith('/find_trains'):
-            print('find the train',data)
-            return render_template('train_finder.html',data=data,fromDest=fromDest,toDest=toDest)
-        return jsonify(list(data))
+            print('find the train', data)
+            return render_template('train_finder.html', data=data, fromDest=fromDest, toDest=toDest)
+        return jsonify(data)
+
+    except ValueError as ve:
+        print(ve)
+        return jsonify({'error': str(ve)}), 400
     except Exception as e:
         print(e)
         traceback.print_exc()
-        return jsonify(['no data' for i in range(10)])
+        return jsonify({'error': 'Internal Server Error'}), 500
 
 
 
@@ -168,9 +177,12 @@ def trainstatus():
 
 
 
-@app.route('/book')
-@app.route('/get_ticket/<train_no>')
-def book(train_no):
+
+@app.route('/book_ticket/')
+def book():
+    train_no = request.args.get('train_no')
+    start_from = request.args.get('start_from')
+    end_from = request.args.get('end_from')
     return render_template('bookingpage.html',train_no=train_no)
 
 
@@ -227,5 +239,49 @@ def booking_link():
 def qr_code():
     # Serve the QR code image to the webpage
     return send_file('static/qr_code.png', mimetype='image/png')
+import requests
+@app.route('/find_stations',methods=['POST'])
+def find_stations():
+    station_name=request.json.get('station_name')
+    try:
+        headers = {
+            'accept': 'application/json, text/javascript, */*; q=0.01',
+            'accept-language': 'en-US,en;q=0.7',
+            'origin': 'https://www.railyatri.in',
+            'priority': 'u=1, i',
+            'referer': 'https://www.railyatri.in/',
+            '^sec-ch-ua': '^\\^Brave^\\^;v=^\\^125^\\^, ^\\^Chromium^\\^;v=^\\^125^\\^, ^\\^Not.A/Brand^\\^;v=^\\^24^\\^^',
+            'sec-ch-ua-mobile': '?0',
+            '^sec-ch-ua-platform': '^\\^Windows^\\^^',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-site',
+            'sec-gpc': '1',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+        }
+
+        params = (
+            ('q', station_name),
+            ('hide_city', 'true'),
+        )
+
+        response = requests.get('https://api.railyatri.in/api/common_city_station_search.json', headers=headers, params=params)
+        stations=response.json().get('items')
+        station_names = [station['station_name'] for station in stations]
+        store_train_data(stations)
+    except:
+        station_names=stations_stored.suggestions
+    return jsonify(station_names)
 
 
+@app.errorhandler(400)
+def bad_request_error(error):
+    return render_template('train_error.html')
+@app.errorhandler(404)
+def bad_request_error(error):
+    return render_template('train_error.html')
+
+# Route for 500 - Internal Server Error
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('train_error.html')
