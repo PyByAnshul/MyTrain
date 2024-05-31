@@ -7,6 +7,10 @@ import random
 from scripts.indiarailway import main as indiatrain
 from scripts.runningstatus import main as running_status
 from static.stationdata import stations as stations_stored
+from scripts.railyatri import main as railyatri_status
+from scripts.map import main as map_main
+from threading import Thread
+import concurrent.futures
 app = Flask(__name__)
 import os
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
@@ -145,7 +149,7 @@ def submitsearch():
             keywordsearch(from_id, to_id,request_id)
 
         if request.path.startswith('/find_trains'):
-            print('find the train', data)
+            # print('find the train', data)
             return render_template('train_finder.html', data=data, fromDest=fromDest, toDest=toDest)
         return jsonify(data)
 
@@ -159,12 +163,51 @@ def submitsearch():
 
 
 
-@app.route('/train_finder/<train_no>')
-def searchtrain_no(train_no):
-    data = running_status(trian_number=train_no,date=datetime.now().date())
-    print(data)
-    return render_template('running_status.html',table=data,train_no=train_no)
+@app.route('/train_finder/')
+def searchtrain_no():
+    # Define functions to fetch data
+    train_no = request.args.get('train_no')
+    fromDest = request.args.get('start_from')
+    toDest = request.args.get('end_from')
 
+    def fetch_map(train_no):
+        return map_main(train_no)
+
+    def fetch_running_status(train_no):
+        return running_status(train_number=train_no, date=datetime.now().date())
+    
+    def fetch_time_table(train_no):
+        return railyatri_status(train_no)
+    # Create threads to fetch data concurrently
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        running_train_data = executor.submit(fetch_running_status,train_no)
+        # time_table_data=executor.submit(fetch_time_table,train_no)
+        map_data = executor.submit(fetch_map,train_no)
+   
+
+    # Wait for threads to finish and get results
+    map_result = map_data.result()
+    status_result = running_train_data.result()
+    # time_table_result=time_table_data.result()
+    # Pass results to the template
+    return render_template('running_status.html', running_status=status_result, train_no=train_no, map=map_result,fromDest=fromDest, toDest=toDest)
+
+@app.route('/book_food/')
+def book_food():
+    # Define functions to fetch data
+    train_no = request.args.get('train_no')
+    fromDest = request.args.get('start_from')
+    toDest = request.args.get('end_from')
+    
+    time_table_data=railyatri_status(train_no)
+      
+    return render_template('food_booking.html', train_no=train_no,time_table=time_table_data,fromDest=fromDest, toDest=toDest)
+
+@app.route('/m/link-food-in-train')
+def link_food_in_train():
+    station_code = request.args.get('station_code')
+    train = request.args.get('train')
+    return f"Linking food in train for station {station_code} and train {train}"
 
 @app.route('/user_page/<client_id>')
 def home_page(client_id):
@@ -183,7 +226,7 @@ def book():
     train_no = request.args.get('train_no')
     start_from = request.args.get('start_from')
     end_from = request.args.get('end_from')
-    return render_template('bookingpage.html',train_no=train_no)
+    return render_template('bookingpage.html',train_no=train_no,fromDest=start_from, toDest=end_from)
 
 
 @app.route('/book/book_ticket', methods=['GET','POST'])

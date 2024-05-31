@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from datetime import datetime
-def main(trian_number,date):
+def main(train_number,date):
     if type(date)==str:
         date = datetime.strptime(date, '%Y-%m-%d').date()
     date=re.sub('[^a-zA-Z0-9]','',str(date))
@@ -27,7 +27,7 @@ def main(trian_number,date):
 
     params = (
         ('a', 'status'),
-        ('trainno', trian_number),
+        ('trainno', train_number),
         ('date', date),
     )
 

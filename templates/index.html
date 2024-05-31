@@ -446,7 +446,6 @@ background-color:#5d9cec ;
     </section>
     <!-- footer section ends -->
 
-    {%endblock%}
 
     <!-- scroll top btn -->
     <a href="#home" aria-label="ScrollTop" class="fas fa-angle-up" id="scroll-top"></a>
@@ -484,7 +483,11 @@ background-color:#5d9cec ;
     
     
     <script src="{{url_for('static',filename='js/script.js')}}"></script>
+    {%endblock%}
+    <br>
+    {% block othercontent%}
 
+    {%endblock%}
 </body>
 
 </html>

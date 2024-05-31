@@ -289,7 +289,7 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
                                                 <p><strong>Coach Type:</strong> <span id="coach-type">General</span></p>
                                             </div>
                                             <button id="book-button">Book Seats</button>
-                                            <button id="book-button">Book Food</button>
+                                            <button id="book-food" onclick="book_food()">Book Food</button>
                                         </div>
                                     </div>
                                 </div>
@@ -301,6 +301,22 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
 
         </div>
     </div>
+    <script>
+        const domain1 = window.location.href;
+
+
+function book_food() {
+    // Get the value from the hidden input field
+    var currentPath = window.location.pathname;
+
+    // Split the path by '/' and get the last part
+    var parts = currentPath.split('/');
+    var lastPart = parts[parts.length - 1];
+    window.location.href = '/book_food/?train_no={{train_no}}&start_from={{fromDest}}&end_from={{toDest}}';
+    // Log the last part to the console
+    console.log(lastPart);
+}
+    </script>
     <script src="{{url_for('static',filename='js/booking.js')}}"></script>
     
     {% endblock %}

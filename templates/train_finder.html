@@ -104,7 +104,7 @@
                 <td>{{i["train_name"]}}/{{i["train_number"]}}</td>
                 <td>{{i['from_sta']}}</td>
                 <td>{{i['to_std']}}</td>
-                <td  ><a href="/train_finder/{{i['train_number']}}">view</a></td>
+                <td  ><a href="/train_finder/?train_no={{i['train_number']}}&start_from={{fromDest}}&end_from={{toDest}}">view</a></td>
                 <td  ><a href="/book_ticket/?train_no={{i['train_number']}}&start_from={{fromDest}}&end_from={{toDest}}">view</a></td>
             </tr>
     
