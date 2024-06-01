@@ -10,6 +10,8 @@
     <meta name="description"
         content="Welcome to TrainTransit, where you can find trains and other travel services in a convenient way." />
   <!-- Custom CSS -->
+  <link href="https://fonts.cdnfonts.com/css/gistesy" rel="stylesheet">
+                
   <link rel="stylesheet" href="{{ url_for('static', filename='css/finder.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 <!-- Font Awesome -->
@@ -24,6 +26,14 @@
         cursor: pointer;
 background-color:#5d9cec ;
     }
+    
+                            @import url('https://fonts.cdnfonts.com/css/gistesy');
+.logo{
+    font-family: 'Gistesy';
+    font-style: italic;
+                                                
+}
+                
 </style>
     <title>TrainTransit | Traveling App</title>
 </head>
@@ -488,6 +498,7 @@ background-color:#5d9cec ;
     {% block othercontent%}
 
     {%endblock%}
+    
 </body>
 
 </html>

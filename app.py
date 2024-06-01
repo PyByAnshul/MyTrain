@@ -10,11 +10,14 @@ from static.stationdata import stations as stations_stored
 from scripts.railyatri import main as railyatri_status
 from scripts.map import main as map_main
 from threading import Thread
+from scripts.fetch_stations import main as fetch_station_train_no
 import concurrent.futures
+from static.stationdata.station_info import station_info_train_no
 app = Flask(__name__)
 import os
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
 QR_CODES_DIR = os.path.join(STATIC_DIR, 'qr_codes')
+STATION_INFO_PATH = os.path.join(STATIC_DIR, 'stationdata')
 
 # Ensure the qr_codes directory exists
 if not os.path.exists(QR_CODES_DIR):
@@ -270,18 +273,15 @@ def booking_link():
         qr_path = os.path.join(QR_CODES_DIR, qr_filename)
         qr = qrcode.make(qr_data)
         qr.save(qr_path)
-
-        # Send the QR code image via WhatsApp
-        # pywhatkit.sendwhats_image(phone, qr_path, "Your QR code for booking details")
-        send_email_with_qr(email,qr_path)
-        # Render the success page with the form data
         return render_template('success.html', name=name, email=email, phone=phone, address=address, 
                                train_no=train_no, coach_no=coach_no, seats=seats, total_price=total_price, 
-                               coach_type=coach_type, qr_path=qr_path)
+                               coach_type=coach_type, qr_path=qr_path,qr_name=qr_filename)
 @app.route('/qr_code')
 def qr_code():
     # Serve the QR code image to the webpage
     return send_file('static/qr_code.png', mimetype='image/png')
+
+
 import requests
 @app.route('/find_stations',methods=['POST'])
 def find_stations():
@@ -316,6 +316,38 @@ def find_stations():
         station_names=stations_stored.suggestions
     return jsonify(station_names)
 
+
+
+
+# Initialize Redis client
+
+import random
+@app.route('/getData', methods=['POST'])
+def get_data():
+    # Get train_no from request JSON data
+    request_data = request.json
+    current_url :str=request_data.get('train_no')
+    train_no=current_url[current_url.find('=')+1:current_url.find('&'):]
+    # Check if station info for train_no is in Redis cache
+    station_info = station_info_train_no.get(train_no)
+    if station_info is None:
+        station_info_path = os.path.join(STATION_INFO_PATH,'station_info.py')
+        print(station_info_path)
+        station_info = fetch_station_train_no(train_no)
+        station_info_train_no[train_no] = station_info
+        with open(station_info_path, 'w') as file:
+            file.write("station_info_train_no = " + repr(station_info_train_no))
+        # If station info not found in cache, fetch it
+        # print(station_info_train_no)
+        # Store station info in Redis cache with expiration time (e.g., 60 seconds)
+        
+    else:
+        print("Station info found in Redis cache")
+    print(station_info)
+    random_stations=random.sample(station_info,2)
+    # Prepare response
+    html_text = f"from - { random_stations[0] } \n to - { random_stations[1] }"  # Placeholder response, replace with actual station info
+    return jsonify(html_text)
 
 @app.errorhandler(400)
 def bad_request_error(error):

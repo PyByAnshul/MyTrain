@@ -19,8 +19,13 @@
         checkbox.checked = false;
         checkbox.classList.remove('checked-label'); // Remove the class if it exists
         checkbox.disabled = false; // Enable all checkboxes
+        // Remove the tooltip text span element
+        var label = checkbox.nextElementSibling;
+        var tooltipText = label.querySelector('.tooltip-text');
+        if (tooltipText) {
+            label.removeChild(tooltipText);
+        }
     });
-    
     // Loop through each checkbox and randomly select some
     checkboxes.forEach(function(checkbox) {
         // Generate a random number between 0 and 1
@@ -30,7 +35,40 @@
             checkbox.checked = true;
             checkbox.classList.add('checked-label'); // Add the class
             checkbox.disabled = true; // Disable the checkbox
+            var label = checkbox.nextElementSibling; // Get the label element
+            var tooltipText = document.createElement('span'); // Create a span element for tooltip text
+            tooltipText.textContent = "Hover over me to load data..."; // Initial tooltip text content
+            tooltipText.classList.add('tooltip-text'); // Add tooltip text class
+            label.appendChild(tooltipText); // Append the tooltip text to the label
             
+            // Show tooltip on mouseover
+            label.addEventListener('mouseover', function() {
+                // Make XHR request to Flask app
+                const currentURL = window.location.href;
+                const param={train_no:currentURL}
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/getData', true); // Adjust URL according to your Flask route
+                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            tooltipText.textContent = JSON.parse(xhr.responseText); // Update tooltip text content with response
+                        } else {
+                            // Handle error
+                            console.error('Request failed:', xhr.status, xhr.statusText);
+                            tooltipText.textContent = 'Error: Unable to fetch data';
+                        }
+                    }
+                };
+
+                xhr.send(JSON.stringify(param));
+                tooltipText.style.display = 'flex';
+            });
+            label.addEventListener('mouseout', function() {
+                tooltipText.style.display = 'none';
+            });
+    
         }
     });
 }
@@ -131,3 +169,16 @@ document.getElementById('book-button').addEventListener('click', function() {
         const newUrl = window.location.origin + '/book/book_ticket'+ '?' + urlParams.toString();
         window.location.href = newUrl;
     });
+
+
+    function showTooltip(checkboxId) {
+        var tooltipTextId = "tooltipText_" + checkboxId;
+        var tooltipText = document.getElementById(tooltipTextId);
+        tooltipText.style.display = "flex";
+      }
+    
+      function hideTooltip(checkboxId) {
+        var tooltipTextId = "tooltipText_" + checkboxId;
+        var tooltipText = document.getElementById(tooltipTextId);
+        tooltipText.style.display = "none";
+      }

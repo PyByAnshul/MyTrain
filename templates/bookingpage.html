@@ -111,6 +111,22 @@ border: 1px solid rgba( 255, 255, 255, 0.18 );
             left: 0; /* Initially hide the arrow */
             display: none;
         }
+        .tooltip-text {
+      display: none;
+      position: absolute;
+      background-color: black;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      z-index: 1;
+      bottom: 100%; /* Position the tooltip text above the image */
+    }
+
+    /* Position the tooltip text relative to the label */
+    li {
+      position: relative;
+      display: inline-block; /* Ensure li elements stack horizontally */
+    }
 
 </style>
     <div class="traincontainer trainstructre">
