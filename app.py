@@ -25,7 +25,7 @@ if not os.path.exists(QR_CODES_DIR):
 # setting
 if app:
     from mytrain.setting import *
-    from mytrain.model import database_server, get_train, keywordsearch, get_details, user_singin, get_user_name,get_user_id,store_train_data
+    from mytrain.model import database_server, get_train, keywordsearch, get_details, user_singin, get_user_name,get_user_id,store_train_data,check_train_no_exists
 
 
 def send_mails(user_email, otp):
@@ -273,6 +273,7 @@ def booking_link():
         qr_path = os.path.join(QR_CODES_DIR, qr_filename)
         qr = qrcode.make(qr_data)
         qr.save(qr_path)
+        send_email_with_qr(email,qr_path)
         return render_template('success.html', name=name, email=email, phone=phone, address=address, 
                                train_no=train_no, coach_no=coach_no, seats=seats, total_price=total_price, 
                                coach_type=coach_type, qr_path=qr_path,qr_name=qr_filename)
@@ -329,24 +330,11 @@ def get_data():
     current_url :str=request_data.get('train_no')
     train_no=current_url[current_url.find('=')+1:current_url.find('&'):]
     # Check if station info for train_no is in Redis cache
-    station_info = station_info_train_no.get(train_no)
-    if station_info is None:
-        station_info_path = os.path.join(STATION_INFO_PATH,'station_info.py')
-        print(station_info_path)
-        station_info = fetch_station_train_no(train_no)
-        station_info_train_no[train_no] = station_info
-        with open(station_info_path, 'w') as file:
-            file.write("station_info_train_no = " + repr(station_info_train_no))
-        # If station info not found in cache, fetch it
-        # print(station_info_train_no)
-        # Store station info in Redis cache with expiration time (e.g., 60 seconds)
-        
-    else:
-        print("Station info found in Redis cache")
+    station_info=check_train_no_exists(train_no)
     print(station_info)
     random_stations=random.sample(station_info,2)
     # Prepare response
-    html_text = f"from - { random_stations[0] } \n to - { random_stations[1] }"  # Placeholder response, replace with actual station info
+    html_text = f"{ random_stations[0] } ●---🚂---● { random_stations[1] }"  # Placeholder response, replace with actual station info
     return jsonify(html_text)
 
 @app.errorhandler(400)

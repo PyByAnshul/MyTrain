@@ -1,5 +1,5 @@
 from mytrain.setting import mydb
-
+from scripts.fetch_stations import main as station_info_train_no
 from pymongo import UpdateOne
 def database_server(data: list, request_id) -> tuple:
     for i in data:
@@ -61,3 +61,20 @@ def store_train_data(new_stations):
     ]
     data=mydb.traindatabase.bulk_write(update_operations)
     return True
+
+
+def store_station_train(train_no,stations):
+        data=mydb.stations_train.find_one_and_update({'train_no':train_no},{'$set':{'stations':stations}},upsert=True)
+        return True
+
+def check_train_no_exists(train_no):
+    train_info=mydb.stations_train.find_one({'train_no':train_no})
+    if train_info:
+        return train_info.get('stations')
+    else:
+        stations=station_info_train_no(train_no)
+        if all(stations):
+            store_station_train(train_no,stations)
+        else:
+            return None,None
+        return stations
