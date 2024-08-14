@@ -1,6 +1,9 @@
 from mytrain.setting import mydb
 from scripts.fetch_stations import main as station_info_train_no
 from pymongo import UpdateOne
+
+
+
 def database_server(data: list, request_id) -> tuple:
     for i in data:
         key = {'train_number': i.get('train_number')}

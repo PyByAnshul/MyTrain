@@ -9,10 +9,14 @@ from scripts.runningstatus import main as running_status
 from static.stationdata import stations as stations_stored
 from scripts.railyatri import main as railyatri_status
 from scripts.map import main as map_main
-from threading import Thread
 from scripts.fetch_stations import main as fetch_station_train_no
 import concurrent.futures
-from static.stationdata.station_info import station_info_train_no
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 app = Flask(__name__)
 import os
 STATIC_DIR = os.path.join(os.path.dirname(__file__), 'static')
@@ -162,7 +166,7 @@ def submitsearch():
     except Exception as e:
         print(e)
         traceback.print_exc()
-        return jsonify({'error': 'Internal Server Error'}), 500
+        return jsonify({'error': f'{e}'}), 500
 
 
 
@@ -229,6 +233,7 @@ def book():
     train_no = request.args.get('train_no')
     start_from = request.args.get('start_from')
     end_from = request.args.get('end_from')
+    station_info=check_train_no_exists(train_no)
     return render_template('bookingpage.html',train_no=train_no,fromDest=start_from, toDest=end_from)
 
 
@@ -331,7 +336,7 @@ def get_data():
     train_no=current_url[current_url.find('=')+1:current_url.find('&'):]
     # Check if station info for train_no is in Redis cache
     station_info=check_train_no_exists(train_no)
-    print(station_info)
+    # print(station_info)
     random_stations=random.sample(station_info,2)
     # Prepare response
     html_text = f"{ random_stations[0] } ●---🚂---● { random_stations[1] }"  # Placeholder response, replace with actual station info
