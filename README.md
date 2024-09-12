@@ -3,7 +3,9 @@
 
 
 # build
-run docker build -t traintransit .
+docker build -t traintransit .
+
+# build compose
 docker-compose up -d
 
 ## start 
