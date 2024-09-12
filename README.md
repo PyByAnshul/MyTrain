@@ -1,24 +1,19 @@
 
+##### Docker file
 
 
-## create a venv outer of this folder
+# build
+run docker build -t traintransit .
+docker-compose up -d
 
-python -m venv mytrainenv
+## start 
+docker-compose up
+
+# stop 
+docker-compose down
 
 
-## Install Required Libraries
 
-pip install -r requirements.txt
 
-## run server by click on runproject other wise use this code
 
-cd mytrainenv
-cd scripts
-activate
-cd ..
-cd ..
-cd mytrain
-python wsgi.py
 
-## Visit http://localhost in your browser.
-http://127.0.0.1:5000/
