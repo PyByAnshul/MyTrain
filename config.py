@@ -1,13 +1,18 @@
 # config.py
 
+import os
+
 class Config:
     DEBUG = True
     SECRET_KEY = 'anshulkumar@#$^&dipanshu@@chirag@#$#adnan####@$#'
     SESSION_COOKIE_SECURE=True
-    # MONGODB_SETTINGS={'host':'mongodb://root:example@mongo:27017/mytrain'}
-    # MONGO_URI='mongodb://root:example@mongo:27017/mytrain'
-    # MONGODB_SETTINGS={'host':'mongodb+srv://a9756549615:oNOccgAMhlA79wHW@cluster0.mak8f9p.mongodb.net/mytrain?retryWrites=true&w=majority'}
-    # MONGO_URI='mongodb+srv://a9756549615:oNOccgAMhlA79wHW@cluster0.mak8f9p.mongodb.net/mytrain?retryWrites=true&w=majority'
+    
+    # SQLite Database Configuration
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'mytrain.db')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # Email Configuration
     MAIL_SERVER='smtp.gmail.com'
     MAIL_PORT=465
     MAIL_USERNAME='a9756549615@gmail.com'

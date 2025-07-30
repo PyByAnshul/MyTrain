@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords"
+        content="Indian railway, railway booking, train schedule, train ticket, railway station, railway enquiry, railway reservation, railway booking online, train travel, train fare, railway ticket booking, railway ticket price, Indian railway timetable, Indian railway website, railway booking app, Indian railway app, railway ticket availability, railway ticket cancellation, railway ticket confirmation, railway ticket status, Indian railway map, Indian railway route, Indian railway inquiry, railway helpline, railway customer care, railway facilities, railway amenities, railway journey, Indian railway news, railway updates, railway announcements, railway services, railway transport, railway infrastructure, Indian railway history, railway routes, railway destinations, railway travel tips, railway safety, railway regulations, Indian railway blog, railway articles, railway guide, railway tips, railway FAQs, railway assistance, Indian railway bus, bus booking, bus service, bus route, bus timetable, bus fare, bus ticket, bus reservation, bus booking online, bus travel, bus ticket booking, bus ticket price, bus ticket availability, bus ticket cancellation, bus ticket confirmation, bus ticket status, Indian bus map, Indian bus route, bus inquiry, bus helpline, bus customer care, bus facilities, bus amenities, bus journey, Indian bus news, bus updates, bus announcements, bus services, bus transport, bus infrastructure, Indian bus history, bus routes, bus destinations, bus travel tips, bus safety, bus regulations, Indian bus blog, bus articles, bus guide, bus tips, bus FAQs, bus assistance, Indian railway cab, cab booking, cab service, cab fare, cab reservation, cab booking online, cab travel, cab fare calculator, cab booking app, cab availability, cab cancellation, cab confirmation, cab status, Indian cab service, cab company, cab fleet, cab driver, cab safety, cab regulations, cab travel tips, cab amenities, cab facilities, cab journey, cab news, cab updates, cab announcements, cab transport, cab infrastructure, Indian cab history, cab routes, cab destinations, cab travel guide, cab tips, cab FAQs, cab assistance">
+    <meta name="description"
+        content="Welcome to TrainTransit, where you can find trains and other travel services in a convenient way." />
+  <!-- Custom CSS -->
+  <link href="https://fonts.cdnfonts.com/css/gistesy" rel="stylesheet">
+                
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/finder.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Favicon -->
+<link id='favicon' rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/x-png">
+<style>
+    
+    .searchBtn:hover {
+        cursor: pointer;
+background-color:#5d9cec ;
+    }
+    
+                            @import url('https://fonts.cdnfonts.com/css/gistesy');
+.logo{
+    font-family: 'Gistesy';
+    font-style: italic;
+                                                
+}
+                
+</style>
+    <title>TrainTransit | Traveling App</title>
+</head>
+
+<body oncontextmenu="return false">
+
+    <header>
+        <a href="/" class="logo"> TrainTransit</a>
+
+        <div id="menu" class="fas fa-bars"></div>
+        <nav class="navbar">
+            <ul>
+                <li><a class="active" href="/">Home</a></li>
+                <li><a href="#about">Services</a></li>
+                <li><a href="#skills">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="/signup">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- navbar ends -->
+
+    {% block content%}
+
+    <!-- hero section starts -->
+    <section class="home" id="home">
+        <div id="particles-js"></div>
+
+        <div class="content">
+            <h2>Welcome Aboard <br>TrainTransit,<br /> Your Ultimate <br>Journey <br> Companion</h2>
+            <!-- <p><span class="typing-text">Unlock a world of seamless travel with TrainTransit: Where journeys thrive!</span></p> -->
+
+            <a href="/trains/train_finder/" class="btn"><span>Get Exploration</span>
+                <i class="fas fa-arrow-circle-down"></i>
+            </a>
+
+
+        </div>
+        <div class="image">
+            <img loading="eager"  draggable="false" class="tilt" src="{{url_for('static',filename='images/Main Train.png')}}" alt="" loading="eager">
+        </div>
+
+        
+    </section>
+    <form action="/trains/find_trains" method="post" class="form" id="searchtrain">
+        <div class="searchBox">
+            <div class="searchFrom finderItem search-input wrapper">
+                <p class="searchTitle">ORIGIN</p>
+                <a href="" target="_blank" hidden></a>
+                <input type="text" name="fromDest" id="fromDest" placeholder="Enter Start Destination" autocomplete="off">
+                <div class="autocom-box">
+                    <!-- here list are inserted from javascript -->
+                </div>
+            </div>
+            <div class="searchFrom finderItem search-input1 wrapper2">
+                <p class="searchTitle">DESTINATION</p>
+                <a href="" target="_blank" hidden></a>
+                <input type="text" name="toDest" id="toDest" placeholder="Enter End Destination" autocomplete="off">
+                <div class="autocom-box1">
+                    <!-- here list are inserted from javascript -->
+                </div>
+            </div>
+            <div class="searchDate searchFrom search-input finderItem">
+                <p class="searchTitle">DEPART DATE</p>
+                <input type="date" name="destDate" id="toDate" placeholder="Select Date">
+            </div>
+            <div class="finderItem search-input">
+                <button type="submit" id="submitbtn" class="searchBtn">Submit</button>
+            </div>
+        </div>
+    </form>
+    <!-- hero section ends -->
+
+
+    <!-- about section starts -->
+    <section class="about" id="about">
+        <h2 class="heading"><i class="fas fa-user-alt"></i> Featured <span>Tours</span></h2>
+
+        <br>
+        <div class="row">
+
+            <div class="card">
+                <img loading="lazy"  src="{{url_for('static',filename='images/train1.jpg')}}" class="image" alt="" loading="lazy">
+                <div class="content">
+                    <a href="#">
+                        <span class="title">
+                            Effortless Travel Nationwide: Book Local Trains, Metros, and Buses!
+                        </span>
+                    </a>
+
+                    <p class="desc">
+                        Travel effortlessly across India! Book local trains, metros, and buses hassle-free. From city
+                        buzz to serene escapes, explore every corner with ease.
+                    </p>
+
+                    <a class="action" href="#">
+                        Find out more
+                        <span aria-hidden="true">
+                            →
+                        </span>
+                    </a>
+                </div>
+            </div>
+            <div class="card">
+                <img loading="lazy"  src="{{url_for('static',filename='images/train 2.jpg')}}" class="image" alt="">
+
+                <div class="content">
+                    <a href="#">
+                        <span class="title">
+                            Luxury Travel Made Easy: Book AC & Sleeper Seats for Long Train Trips.
+                        </span>
+                    </a>
+
+                    <p class="desc">
+                        Travel in comfort and style with our AC and sleeper coach seat booking service. Enjoy a
+                        hassle-free journey across India with plush seating options.
+                    </p>
+
+                    <a class="action" href="#">
+                        Find out more
+                        <span aria-hidden="true">
+                            →
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <img loading="lazy"  src="{{url_for('static',filename='images/train 3.jpg')}}" class="image" alt="">
+
+                <div class="content">
+                    <a href="#">
+                        <span class="title">
+                            Simplify Your Travels: Book Seats for Any Journey.
+                        </span>
+                    </a>
+
+                    <p class="desc">
+                        Effortless travel starts here! From short commutes to cross-country adventures,Enjoy peace of
+                        mind on your journey with our comprehensive booking service
+                    </p>
+
+                    <a class="action" href="#">
+                        Find out more
+                        <span aria-hidden="true">
+                            →
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- about section ends -->
+
+
+
+
+    <!-- popular_package section starts -->
+    <section class="popular_package" id="popular_package">
+
+        <h1 class="heading"><i class="fas fa-graduation-cap"></i> Popular <span>Packages</span></h1>
+
+        <p class="qoute">Life is a journey that must be traveled no matter how bad the roads and accommodations.</p>
+        <div class="box-container">
+
+            <div class="box">
+                <div class="image">
+                    <img loading="lazy"  draggable="false" src="{{url_for('static',filename='images/image-3.jpg')}}" alt="">
+                </div>
+                <div class="content">
+                    <h3>Enjoy the beauty place in Paris city</h3>
+                    <p>Explore the timeless allure of Paris, where every street corner holds a story,<br> and each
+                        landmark beckons with its unique charm.</p>
+                    <p style="color: #2506ad;">(2.5k Review)</p>
+                    <h4>$1200</h4>
+
+                </div>
+            </div>
+
+            <div class="box">
+                <div class="image">
+                    <img loading="lazy"  draggable="false" src="{{url_for('static',filename='images/pic-7.jpg')}}" alt="">
+                </div>
+                <div class="content">
+                    <h3>Enjoy The Beauty Place In Birmingham City</h3>
+                    <p>Discover Birmingham's beauty, where each corner reveals its own charm,<br> inviting you to
+                        explore and enjoy the essence of the city</p>
+                    <p style="color: #2506ad;">(2.9k Review)</p>
+
+                    <h4>$1900</h4>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="popular_tour">
+        <h1 class="heading"><i class="fas fa-graduation-cap"></i> Popular <span>Tours</span></h1>
+        <div class="container">
+            <div class="slider-wrapper">
+             
+              <ul class="image-list">
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-1.jpg')}}" alt="img-1" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-2.jpg')}}" alt="img-2" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-3.jpg')}}" alt="img-3" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-4.jpg')}}" alt="img-4" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-5.jpg')}}" alt="img-5" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-6.jpg')}}" alt="img-6" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-7.jpg')}}" alt="img-7" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-8.jpg')}}" alt="img-8" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-9.jpg')}}" alt="img-9" />
+                <img loading="lazy"  class="image-item" src="{{url_for('static',filename='images/img-10.jpg')}}" alt="img-10" />
+              </ul>
+              
+            </div>
+          </div>
+	</section>
+<section class="resturant_section">
+    <h1 class="heading"><i class="fas fa-graduation-cap"></i> Popular <span>Resturants</span></h1>
+    <!-- <h2 class="heading">Popoular <i class="fas fa-briefcase" Resturants></i>   </h2> -->
+
+    <main>
+        <div class="card">
+            <img loading="lazy"  src="https://user-images.githubusercontent.com/13468728/230662929-3ad798fd-5d35-43c7-9867-5a1302153bac.jpg" alt="">
+          
+            <div class="info">
+                <h1>Fresh Flavors</h1>
+                <p>The farm isn't just a place to work; it's like a big, green friend that provides delicious fruits and vegetables. You enjoy meals made from fresh, local goodies. It's all about keeping things simple, tasty, and connected to the land.</p>
+                <button>Read More</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img loading="lazy"  src="{{url_for('static',filename='images/resturant1.jpg')}}"  alt="">
+            <div class="info">
+                <h1>Whispers of Nature</h1>
+                <p>In the countryside, plants are like the storytellers of the landscape, each one with its own tale to tell. Simple pleasures come from watching plants grow and change with the seasons. The beauty of plants is a constant reminder of the rhythm of life in the country.</p>
+                <button>Read More</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <img loading="lazy"  src="{{url_for('static',filename='images/resturant2.jpg')}}"  alt="">
+            
+            <div class="info">
+                <h1>Countryside Harmony</h1>
+                <p>Life in the countryside follows a rhythmic routine. When the sun comes up, farmers take care of their fields and they are growing rows of crops that dance in the breeze. The good things that come from the land are a happy celebration of how much nature gives us.</p>
+                <button>Read More</button>
+            </div>
+        </div>
+    </main>
+
+</section>
+    <section class="popular_service" id="popular_service">
+
+        <h2 class="heading"><i class="fas fa-briefcase"></i> Services </h2>
+<br>
+        <div class="timeline">
+
+            <div class="container right">
+                <div class="content">
+                    <div class="tag">
+                        <h2>Real-time train tracking</h2>
+                    </div>
+                    <div class="desc">
+                        <!-- <h3>Track train location</h3> -->
+                        <p>Users can track the exact location and status of their train in real-time.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container left">
+                <div class="content">
+                    <div class="tag">
+                        <h2>Ticket booking</h2>
+                    </div>
+                    <div class="desc">
+                        <!-- <h3>Web Developer | Internship</h3> -->
+                        <p>Passengers can easily book train tickets directly through the app.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container right">
+                <div class="content">
+                    <div class="tag">
+                        <h2>Seat availability</h2>
+                    </div>
+                    <div class="desc">
+                        <!-- <h3>Website Developer | Internship</h3> -->
+                        <p>Allows users to check seat availability on specific trains and book seats accordingly.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container left">
+                <div class="content">
+                    <div class="tag">
+                        <h2>Find Bus Services</h2>
+                    </div>
+                    <div class="desc">
+                        <!-- <h3>Mobile Application Developer | Internship</h3> -->
+                        <p>Allows users to search for bus routes, schedules, and ticket prices for both local and
+                            intercity buses. Users can also check bus availability and book tickets directly through the
+                            app.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container right">
+                <div class="content">
+                    <div class="tag">
+                        <h2>Find Hotels</h2>
+                    </div>
+                    <div class="desc">
+                        <!-- <h3>Wordpress Developer | Internship</h3> -->
+                        <p>The app offers a hotel search feature where users can browse and filter hotels based on their
+                            preferences such as location, price range, amenities, and user ratings. Users can view hotel
+                            details, photos, reviews, and book rooms instantly</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container left">
+                <div class="content">
+                    <div class="tag">
+                        <h2>Book QR Code Tickets</h2>
+                    </div>
+                    <div class="desc">
+                        <!-- <h3>Web Development & SEO | Internship</h3> -->
+                        <p>Enables users to book tickets for trains, buses, or other transportation modes and receive QR
+                            code tickets directly on their mobile devices. The QR code serves as a digital ticket that
+                            can be scanned at the station or onboard for validation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="morebtn">
+            <a href="/popular_service" class="btn"><span>View All</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        </div>
+
+    </section>
+    <!-- popular_service section ends -->
+
+    <!-- contact section starts -->
+    <section class="contact" id="contact">
+
+        <h2 class="heading"><i class="fas fa-headset"></i> Get in <span>Touch</span></h2>
+
+        <div class="container">
+            <div class="content">
+                <div class="image-box">
+                    <img loading="lazy"  draggable="false" src="{{url_for('static',filename='images/contact1.png')}}" alt="">
+                </div>
+                <form id="contact-form">
+
+                    <div class="form-group">
+                        <div class="field">
+                            <input type="text" name="name" placeholder="Name" required>
+                            <i class='fas fa-user'></i>
+                        </div>
+                        <div class="field">
+                            <input type="text" name="email" placeholder="Email" required>
+                            <i class='fas fa-envelope'></i>
+                        </div>
+                        <div class="field">
+                            <input type="text" name="phone" placeholder="Phone">
+                            <i class='fas fa-phone-alt'></i>
+                        </div>
+                        <div class="message">
+                            <textarea placeholder="Message" name="message" required></textarea>
+                            <i class="fas fa-comment-dots"></i>
+                        </div>
+                    </div>
+                    <div class="button-area">
+                        <button type="submit">
+                            Submit <i class="fa fa-paper-plane"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- contact section ends -->
+
+
+    <!-- footer section starts -->
+    <section class="footer">
+
+        <div class="box-container">
+
+            <div class="box">
+                <h3>Train Transit App</h3>
+                <p>Thank you for visiting our traveling website. Connect with me over socials. <br /> <br />
+                    Keep Rising 🚀. Connect with me over live chat!</p>
+            </div>
+
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="#home"><i class="fas fa-chevron-circle-right"></i> home</a>
+                <a href="#about"><i class="fas fa-chevron-circle-right"></i> about</a>
+                <a href="#services"><i class="fas fa-chevron-circle-right"></i> services</a>
+                <a href="#contact"><i class="fas fa-chevron-circle-right"></i> contact</a>
+               
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <p> <i class="fas fa-phone"></i>+91 9456-9545-82</p>
+                <p> <i class="fas fa-envelope"></i>anshul.kumar.at.work@gmail.com</p>
+                <p> <i class="fas fa-map-marked-alt"></i>MZN, India-251001</p>
+                <div class="share">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- footer section ends -->
+
+
+    <!-- scroll top btn -->
+    <a href="#home" aria-label="ScrollTop" class="fas fa-angle-up" id="scroll-top"></a>
+    <!-- scroll back to top -->
+
+
+    <!-- ==== ALL MAJOR JAVASCRIPT CDNS STARTS ==== -->
+    <!-- jquery cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- typed.js cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.5/typed.min.js"
+        integrity="sha512-1KbKusm/hAtkX5FScVR5G36wodIMnVd/aP04af06iyQTkD17szAMGNmxfNH+tEuFp3Og/P5G32L1qEC47CZbUQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- particle.js links -->
+    <script src="{{url_for('static',filename='js/particles.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/app.js')}}"></script>
+
+    <!-- vanilla tilt.js links -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"
+        integrity="sha512-SttpKhJqONuBVxbRcuH0wezjuX+BoFoli0yPsnrAADcHsQMW8rkR84ItFHGIkPvhnlRnE2FaifDOUw+EltbuHg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- scroll reveal anim -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+    <!-- <script src="{{ url_for('static', filename='js/stations.js') }}"></script> -->
+    <script src="{{ url_for('static', filename='js/searchtrain.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/destination.js') }}"></script>
+    
+    
+    <script src="{{url_for('static',filename='js/script.js')}}"></script>
+    {%endblock%}
+    <br>
+    {% block othercontent%}
+
+    {%endblock%}
+    
+</body>
+
+</html>
