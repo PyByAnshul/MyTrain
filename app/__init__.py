@@ -7,11 +7,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import os
-
+from .utils.proxy_manager import monkey_patch_requests
 # Initialize extensions
 db = SQLAlchemy()
 mail = Mail()
 
+monkey_patch_requests()
 def create_app(config_class=None):
     """Application factory function"""
     app = Flask(__name__, 
