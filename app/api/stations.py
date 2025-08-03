@@ -169,7 +169,8 @@ def search_stations():
                             'code': code
                         })
             except Exception as e:
-                print(f"Database search error: {e}")
+                #print(f"Database search error: {e}")
+                ...
         
         return jsonify({
             'status': 'success',
@@ -178,7 +179,7 @@ def search_stations():
         })
         
     except Exception as e:
-        print(f"Error in station search: {e}")
+        #print(f"Error in station search: {e}")
         return jsonify({
             'status': 'error',
             'message': 'Failed to search stations',

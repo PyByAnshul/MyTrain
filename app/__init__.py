@@ -39,6 +39,9 @@ def create_app(config_class=None):
     # Register error handlers
     register_error_handlers(app)
     
+    # Register template filters
+    register_template_filters(app)
+    
     return app
 
 def ensure_directories(app):
@@ -64,4 +67,27 @@ def register_blueprints(app):
 def register_error_handlers(app):
     """Register error handlers"""
     from app.views.errors import register_error_handlers as register_errors
-    register_errors(app) 
+    register_errors(app)
+
+def register_template_filters(app):
+    """Register custom template filters"""
+    from app.utils.image_helper import image_helper
+    from flask import redirect, abort
+    
+    @app.template_filter('image_url')
+    def image_url_filter(filename):
+        return image_helper.get_image_url(filename)
+    
+    @app.route('/static/images/<path:filename>')
+    def custom_static_images(filename):
+        """Custom handler for image requests"""
+        local_path = os.path.join(app.static_folder, 'images', filename)
+        if os.path.exists(local_path):
+            return app.send_static_file(f'images/{filename}')
+        
+        # Redirect to Google Drive if local file doesn't exist
+        drive_url = image_helper.image_links.get(filename)
+        if drive_url:
+            return redirect(drive_url)
+        
+        abort(404) 

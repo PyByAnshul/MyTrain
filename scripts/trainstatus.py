@@ -42,7 +42,7 @@ def main(trian_number):
     # time.sleep(5)
     # Extract the content you need
     # For example, printing the page source
-    print(driver.page_source)
+    # #print(driver.page_source)
     tag=BeautifulSoup(driver.page_source,'html.parser')
     table=tag.find('div',{'id':'main-block'})
     table_next=table.find_next_sibling('div',{'class':'white-timeline-bg'})

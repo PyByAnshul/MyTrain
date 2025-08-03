@@ -23,7 +23,7 @@ class EmailService:
             mail.send(msg)
             return True
         except Exception as e:
-            print(f"Error sending verification email: {e}")
+            #print(f"Error sending verification email: {e}")
             return False
     
     @staticmethod
@@ -48,7 +48,7 @@ class EmailService:
             mail.send(msg)
             return True
         except Exception as e:
-            print(f"Error sending booking confirmation email: {e}")
+            #print(f"Error sending booking confirmation email: {e}")
             return False
     
     @staticmethod
@@ -70,5 +70,5 @@ class EmailService:
             mail.send(msg)
             return True
         except Exception as e:
-            print(f"Error sending password reset email: {e}")
+            #print(f"Error sending password reset email: {e}")
             return False 

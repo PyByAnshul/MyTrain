@@ -28,7 +28,7 @@ def submit_search():
             toDest = request.json['toDest']
             fromDest = request.json['fromDest']
             date = request.json['toDate']
-
+        print(toDest, fromDest, date)   
         # Query the database to find station codes
         to_document = TrainService.search_stations_by_name(toDest)
         from_document = TrainService.search_stations_by_name(fromDest)
@@ -39,7 +39,7 @@ def submit_search():
         to_id = to_document[0] if to_document else toDest
         from_id = from_document[0] if from_document else fromDest
 
-        print(toDest, fromDest)
+        #print(toDest, fromDest)
         request_id = str(uuid1())
 
         # Retrieve train data
@@ -50,23 +50,25 @@ def submit_search():
                 date = datetime.now().date()
             data = TrainService.fetch_trains_from_api(from_id, to_id, date)
             
+            
             if data:
                 # Save data to database
                 TrainService.store_train_data(data, request_id)
                 TrainService.store_keyword_search(from_id, to_id, request_id)
                 
-        print(f'From Station ID: {from_id}, To Station ID: {to_id}')
-        print(f'Data: {data}')
+        #print(f'From Station ID: {from_id}, To Station ID: {to_id}')
+        # #print(f'Data: {data}')
 
         if request.path.startswith('/trains/find_trains'):
-            return render_template('train_finder.html', data=data, fromDest=fromDest, toDest=toDest)
-        return jsonify(data)
-
+            return render_template('train_finder.html',data= data, fromDest=fromDest, toDest=toDest)        
+        else:
+            # Return JSON response for API 
+            return jsonify(data)
     except ValueError as ve:
-        print(ve)
+        #print(ve)
         return jsonify({'error': str(ve)}), 400
     except Exception as e:
-        print(e)
+        #print(e)
         traceback.print_exc()
         return jsonify({'error': f'{e}'}), 500
 

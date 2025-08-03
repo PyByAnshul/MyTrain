@@ -7,7 +7,7 @@ def main(train_number,date):
     if type(date)==str:
         date = datetime.strptime(date, '%Y-%m-%d').date()
     date=re.sub('[^a-zA-Z0-9]','',str(date))
-    print(date)
+    #print(date)
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',

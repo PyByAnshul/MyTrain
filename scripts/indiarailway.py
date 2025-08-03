@@ -5,7 +5,7 @@ def main(source,dist,date):
         date = datetime.strptime(date, '%Y-%m-%d').date()
     
     date = date.strftime("%d-%m-%Y")
-    print(date)
+    #print(date)
     headers = {
         'authority': 'www.railyatri.in',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
@@ -45,7 +45,7 @@ def main(source,dist,date):
     )
 
     response = requests.get('https://api.railyatri.in/api/trains-between-station-from-wrapper.json', headers=headers, params=params)
-    # print(response.json())
+    # #print(response.json())
     return response.json()
 
 # main('DLI',"MOZ",'25-12-2023')

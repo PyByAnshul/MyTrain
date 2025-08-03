@@ -8,7 +8,7 @@ def main(source_code,dist_code,date):
         date = datetime.strptime(date, '%Y-%m-%d').date()
     
     date = date.strftime("%d-%m-%Y")
-    print(date)
+    #print(date)
     headers = {
         'authority': 'www.trainman.in',
         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
@@ -36,11 +36,11 @@ def main(source_code,dist_code,date):
         response = requests.get(f'https://www.trainman.in/services/trains/{source_code}/{dist_code}', headers=headers, params=params,cookies=cookies)
         
     except requests.exceptions:
-        print('excepipi')
+        #print('excepipi')
         return {}
-    print(response.json())
+    # #print(response.json())
     return {'response':dict(response.json())}
 
 
 # da=main('DLI','MOZ',datetime.now().date())
-# print(da)
+# #print(da)

@@ -1,89 +1,90 @@
 """
-Proxy Manager with rotation and monkey patching
+Proxy Manager with database integration and rotation
 """
 import requests
-import random
-import os
 from functools import wraps
+from datetime import datetime
 
 class ProxyManager:
     def __init__(self):
-        self.proxies = self.load_proxies()
-        self.current_index = 0
+        self.current_proxy = None
         
-    def load_proxies(self):
-        """Load proxies from CSV file"""
-        proxy_file = os.path.join(os.path.dirname(__file__), '../../Free_Proxy_List.txt')
+    def get_working_proxy(self):
+        """Get a working proxy from database"""
         try:
-            proxies = []
-            with open(proxy_file, 'r') as f:
-                lines = f.readlines()[1:]  # Skip header
-                for line in lines:
-                    if line.strip():
-                        parts = line.split(',')
-                        if len(parts) >= 2:
-                            ip = parts[0].strip('"')
-                            port = parts[7].strip('"')  # port is at index 7
-                            proxies.append(f"{ip}:{port}")
-            return proxies
-        except (FileNotFoundError, IndexError):
-            return ["103.152.112.162:80", "185.199.84.161:53281"]
+            from flask import has_app_context
+            if not has_app_context():
+                return None
+            from app.models.proxy import ProxyStatus
+            from app import db
+            proxy_status = ProxyStatus.query.filter_by(is_working=True).order_by(ProxyStatus.last_used_time.asc()).first()
+            if proxy_status:
+                proxy_status.last_used_time = datetime.utcnow()
+                db.session.commit()
+                self.current_proxy = proxy_status.proxy
+                return {
+                    'http': f'http://{proxy_status.proxy}',
+                    'https': f'http://{proxy_status.proxy}'
+                }
+        except Exception:
+            pass
+        return None
     
-    def get_proxy(self):
-        """Get current proxy"""
-        if not self.proxies:
-            return None
-        proxy = self.proxies[self.current_index % len(self.proxies)]
-        return {
-            'http': f'http://{proxy}',
-            'https': f'http://{proxy}'
-        }
-    
-    def rotate_proxy(self):
-        """Rotate to next proxy"""
-        self.current_index += 1
+    def mark_proxy_failed(self, proxy_url):
+        """Mark proxy as failed in database"""
+        if proxy_url:
+            try:
+                from flask import has_app_context
+                if not has_app_context():
+                    return
+                from app.models.proxy import ProxyStatus
+                from app import db
+                proxy_status = ProxyStatus.query.filter_by(proxy=proxy_url).first()
+                if proxy_status:
+                    proxy_status.is_working = False
+                    db.session.commit()
+            except Exception:
+                pass
 
 # Global proxy manager instance
 proxy_manager = ProxyManager()
 
 def monkey_patch_requests():
-    """Monkey patch requests to use rotating proxies"""
+    """Monkey patch requests to use database-backed proxies"""
     original_get = requests.get
     original_post = requests.post
     
     @wraps(original_get)
     def patched_get(*args, **kwargs):
-        max_retries = len(proxy_manager.proxies) if proxy_manager.proxies else 3
-        for attempt in range(max_retries):
+        for attempt in range(3):
             try:
-                proxy = proxy_manager.get_proxy()
+                proxy = proxy_manager.get_working_proxy()
                 if proxy:
                     kwargs['proxies'] = proxy
                     kwargs['verify'] = False
                     kwargs['timeout'] = kwargs.get('timeout', 5)
                 return original_get(*args, **kwargs)
-            except (requests.exceptions.ProxyError, requests.exceptions.ConnectTimeout, OSError) as e:
-                proxy_manager.rotate_proxy()
-                if attempt == max_retries - 1:
-                    # Try without proxy as last resort
+            except (requests.exceptions.ProxyError, requests.exceptions.ConnectTimeout, OSError):
+                if proxy_manager.current_proxy:
+                    proxy_manager.mark_proxy_failed(proxy_manager.current_proxy)
+                if attempt == 2:
                     kwargs.pop('proxies', None)
                     return original_get(*args, **kwargs)
     
     @wraps(original_post)
     def patched_post(*args, **kwargs):
-        max_retries = len(proxy_manager.proxies) if proxy_manager.proxies else 3
-        for attempt in range(max_retries):
+        for attempt in range(3):
             try:
-                proxy = proxy_manager.get_proxy()
+                proxy = proxy_manager.get_working_proxy()
                 if proxy:
                     kwargs['proxies'] = proxy
                     kwargs['verify'] = False
                     kwargs['timeout'] = kwargs.get('timeout', 5)
                 return original_post(*args, **kwargs)
-            except (requests.exceptions.ProxyError, requests.exceptions.ConnectTimeout, OSError) as e:
-                proxy_manager.rotate_proxy()
-                if attempt == max_retries - 1:
-                    # Try without proxy as last resort
+            except (requests.exceptions.ProxyError, requests.exceptions.ConnectTimeout, OSError):
+                if proxy_manager.current_proxy:
+                    proxy_manager.mark_proxy_failed(proxy_manager.current_proxy)
+                if attempt == 2:
                     kwargs.pop('proxies', None)
                     return original_post(*args, **kwargs)
     

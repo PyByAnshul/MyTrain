@@ -86,7 +86,7 @@ class TrainService:
                 return trains if trains else None
             return None
         except Exception as e:
-            print(f"Error in get_train_data: {e}")
+            #print(f"Error in get_train_data: {e}")
             return None
     
     @staticmethod
@@ -114,7 +114,7 @@ class TrainService:
                 return json.loads(train.train_data)
             return None
         except Exception as e:
-            print(f"Error in get_train_details: {e}")
+            #print(f"Error in get_train_details: {e}")
             return None
     
     @staticmethod
@@ -180,7 +180,7 @@ class TrainService:
                 else:
                     return None
         except Exception as e:
-            print(f"Error in check_train_exists: {e}")
+            #print(f"Error in check_train_exists: {e}")
             return None
     
     @staticmethod
@@ -192,7 +192,7 @@ class TrainService:
             ).all()
             return [station.station_code for station in stations]
         except Exception as e:
-            print(f"Error in search_stations_by_name: {e}")
+            #print(f"Error in search_stations_by_name: {e}")
             return []
     
     @staticmethod
@@ -205,5 +205,5 @@ class TrainService:
                 data = ['no data' for _ in range(10)]
             return data
         except Exception as e:
-            print(f"Error in fetch_trains_from_api: {e}")
+            #print(f"Error in fetch_trains_from_api: {e}")
             return [] 

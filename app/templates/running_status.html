@@ -1248,7 +1248,7 @@
                     // Split the path by '/' and get the last part
                     var parts = currentPath.split('/');
                     var lastPart = parts[parts.length - 1];
-                    window.location.href = '/booking/book/book_ticket/?train_no={{train_no}}&start_from={{fromDest}}&end_from={{toDest}}';
+                    window.location.href = '/booking/book_ticket/?train_no={{train_no}}&start_from={{fromDest}}&end_from={{toDest}}';
                     // Log the last part to the console
                     console.log(lastPart);
                 }
@@ -1259,7 +1259,7 @@
                     // Split the path by '/' and get the last part
                     var parts = currentPath.split('/');
                     var lastPart = parts[parts.length - 1];
-                    window.location.href = '/book_food/?train_no={{train_no}}&start_from={{fromDest}}&end_from={{toDest}}';
+                    window.location.href = '/booking/book_food/?train_no={{train_no}}&start_from={{fromDest}}&end_from={{toDest}}';
                     // Log the last part to the console
                     console.log(lastPart);
                 }

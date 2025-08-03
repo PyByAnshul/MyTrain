@@ -45,7 +45,7 @@ def signup_form():
 @auth_bp.route('/verifyOTP', methods=['POST', 'GET'])
 def verify_otp():
     """Verify OTP"""
-    print(request.json['otp'])
+    #print(request.json['otp'])
     return redirect(url_for('main.train_finder'))
 
 @auth_bp.route('/signupFormCompleted', methods=['POST'])

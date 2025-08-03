@@ -6,6 +6,7 @@ from flask import Blueprint, request, jsonify
 from app.services import TrainService
 import requests
 import random
+import traceback
 
 api_bp = Blueprint('api', __name__)
 
@@ -13,7 +14,7 @@ api_bp = Blueprint('api', __name__)
 def find_stations():
     """Find stations by name"""
     station_name = request.json.get('station_name')
-    print(station_name)
+    # #print(station_name)
     try:
         headers = {
             'accept': 'application/json, text/javascript, */*; q=0.01',
@@ -45,11 +46,12 @@ def find_stations():
         TrainService.store_station_data(stations)
     
     except Exception as e:
+        traceback.print_exc()
         print(f"Error fetching stations: {e}")
         # Fallback to stored stations
-        from static.stationdata import stations as stations_stored
+        from app.static.stationdata import stations as stations_stored
         station_names = stations_stored.suggestions
-    print(station_names)
+    #print(station_names)
     return jsonify(station_names)
 
 @api_bp.route('/getData', methods=['POST'])
